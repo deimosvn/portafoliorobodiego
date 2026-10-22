@@ -510,6 +510,7 @@
     // Arranca con la línea ya en marcha
     for (let i = 0; i < 26 * 30; i++) step(1 / 30);
     updateSlats();
+    intro.forEach(it => it.p0.copy(it.obj.position));
 
     // Ensamble de entrada
     const INTRO = intro.reduce((m, it) => Math.max(m, it.delay), 0) + 0.9;
