@@ -147,7 +147,7 @@
     const pw = Math.min(W * 0.32, 220), ph = H * 0.2, px = 12, py = 30;
     ctx.strokeStyle = FAINT; ctx.strokeRect(px, py, pw, ph);
     ctx.beginPath(); ctx.moveTo(px, py + ph / 2); ctx.lineTo(px + pw, py + ph / 2); ctx.stroke();
-    text('θ(t) · últimos 6 s', px, py - 8);
+    text(W < 460 ? 'θ(t)' : 'θ(t) · últimos 6 s', px, py - 8);
     ctx.strokeStyle = WHITE; ctx.beginPath();
     disp.trail.forEach((v, i) => {
       const xx = px + (i / 299) * pw, yy = py + ph / 2 - Math.max(-1, Math.min(1, v / TMAX)) * (ph / 2);
@@ -158,7 +158,7 @@
     // Curva de aprendizaje
     const lw = Math.min(W * 0.32, 220), lx = W - lw - 12;
     ctx.strokeStyle = FAINT; ctx.strokeRect(lx, py, lw, ph);
-    text('Recompensa por generación', lx + lw, py - 8, 'right');
+    text(W < 460 ? 'Recompensa' : 'Recompensa por generación', lx + lw, py - 8, 'right');
     if (history.length) {
       const n = history.length, bwid = lw / 40;
       ctx.fillStyle = WHITE;

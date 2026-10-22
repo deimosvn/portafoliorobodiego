@@ -145,32 +145,36 @@
   }
 
   /* =====================================================================
-     HERO: celda de paletizado con dos robots (cinemática inversa en vivo)
+     HERO: línea de manufactura con cinco tipos de robot
+     1 brazo de 6 ejes · 2 robot delta · 3 SCARA · 4 robot móvil AMR · 5 dron
      ===================================================================== */
   (function heroCell() {
     const stage = document.getElementById('stage');
     const canvas = document.getElementById('cell');
     const renderer = canvas && makeRenderer(canvas);
     if (!renderer) return;
+    const V = (x = 0, y = 0, z = 0) => new T.Vector3(x, y, z);
+    const lift = (v, h) => V(v.x, v.y + h, v.z);
 
     const scene = new T.Scene();
     const cam = new T.OrthographicCamera(-1, 1, 1, -1, -60, 60);
-    const target = new T.Vector3(0.15, 0.85, 0.35);
-    const intro = []; // piezas que se ensamblan al cargar
-    const queue = (obj, off, delay) => intro.push({ obj, p0: obj.position.clone(), off: new T.Vector3(...off), delay });
+    const target = V(0.15, 0.82, -0.35);
+    const intro = [];
+    const queue = (obj, off, delay) => intro.push({ obj, p0: obj.position.clone(), off: V(...off), delay });
+    const addQ = (obj, off, delay) => { scene.add(obj); queue(obj, off, delay); return obj; };
 
-    scene.add(gridRect(-4.4, 4.4, -2.0, 2.4, 0.4));
+    scene.add(gridRect(-4.4, 4.4, -2.8, 2.4, 0.4));
 
-    // Banda transportadora
-    const BELT_Z = 1.25, BELT_Y = 0.55, X0 = -4.45, X1 = 4.45, CUBE = 0.28, CUBE_Y = BELT_Y + CUBE / 2;
-    const SPEED = 0.45, INTERVAL = 3.0;
+    // ---------- banda transportadora ----------
+    const BELT_Z = 1.25, BELT_Y = 0.55, X0 = -4.45, X1 = 4.45, CUBE = 0.28;
+    const SPEED = 0.45, INTERVAL = 1.5;
     const conv = [];
     conv.push(part(B(8.9, 0.06, 0.7), 0, BELT_Y - 0.03, BELT_Z));
     [-1, 1].forEach(s => conv.push(part(B(8.9, 0.1, 0.05), 0, BELT_Y - 0.01, BELT_Z + s * 0.375)));
     for (let x = -3.9; x <= 3.95; x += 1.3) [-1, 1].forEach(s => conv.push(part(B(0.06, BELT_Y - 0.06, 0.06), x, (BELT_Y - 0.06) / 2, BELT_Z + s * 0.33)));
     conv.push(part(B(0.8, 1.15, 1.05), -4.85, 0.575, BELT_Z));
     conv.push(part(B(0.8, 0.85, 1.05), 4.85, 0.425, BELT_Z));
-    conv.forEach((m, i) => { scene.add(m); queue(m, [0, 1.6, 0], 0.02 * i); });
+    conv.forEach((m, i) => addQ(m, [0, 1.6, 0], 0.02 * i));
     const SLATS = 28, SLAT_GAP = (X1 - X0) / SLATS;
     const slatPos = new Float32Array(SLATS * 6);
     const slatGeo = new T.BufferGeometry();
@@ -185,135 +189,336 @@
       slatGeo.attributes.position.needsUpdate = true;
     }
 
+    // ---------- movimiento compartido: tramos que siguen una pieza o van a un punto ----------
+    const UPV = V(0, 1, 0), tmp = V();
+    function rod(t) { return part(B(t, 1, t)); }
+    function setRod(m, a, b) {
+      tmp.subVectors(b, a);
+      const L = tmp.length() || 1e-6;
+      m.position.addVectors(a, b).multiplyScalar(0.5);
+      m.quaternion.setFromUnitVectors(UPV, tmp.multiplyScalar(1 / L));
+      m.scale.set(1, L, 1);
+    }
+    function enter(r) {
+      const s = r.seq[r.i];
+      r.p0.copy(r.cur); r.gFrom = r.grip;
+      if (s.start) s.start();
+      if (s.track) s.off = r.p0.clone().sub(s.track()); else s.goal = s.to();
+    }
+    function pose(r, s, k) {
+      const e = ease(Math.min(1, k));
+      if (s.track) r.cur.copy(s.track()).addScaledVector(s.off, 1 - e);
+      else r.lerp(r.p0, s.goal, e, r.cur);
+      r.grip = r.gFrom + (s.g - r.gFrom) * Math.min(1, k / 0.7);
+    }
+    function run(r, dt) {
+      if (!r.seq) return;
+      r.t += dt;
+      while (r.seq && r.t >= r.seq[r.i].d) {
+        const s = r.seq[r.i];
+        r.t -= s.d; pose(r, s, 1);
+        if (s.end) s.end();
+        r.i++;
+        if (r.i >= r.seq.length) { r.seq = null; if (r.after) r.after(); }
+        else enter(r);
+      }
+      if (r.seq) pose(r, r.seq[r.i], r.t / r.seq[r.i].d);
+    }
+    const linear = (p, q, s, out) => out.lerpVectors(p, q, s);
+
+    // ---------- piezas en la banda ----------
+    const items = [];
+    const cubeGeo = B(CUBE, CUBE, CUBE), discGeo = C(0.11, 0.11, 0.07, 16);
+    const looks = [[MAT.fillWhite, MAT.lineBlue], [MAT.fillLight, MAT.line], [MAT.fill, MAT.line]];
+    const PATTERN = ['cube', 'disc', null, 'disc'];
+    let simT = 0, spawnClock = 0, pat = 0, nCube = 0, nDisc = 0, placed = 0;
+    function spawn() {
+      const kind = PATTERN[pat++ % PATTERN.length];
+      if (!kind) return;
+      let m;
+      if (kind === 'cube') { const [f, l] = looks[nCube++ % 3]; m = part(cubeGeo, X0 - 0.1, BELT_Y + CUBE / 2, BELT_Z, f, l); }
+      else m = part(discGeo, X0 - 0.1, BELT_Y + 0.035, BELT_Z + (nDisc++ % 2 ? 0.12 : -0.12), MAT.fillWhite, MAT.lineBlue);
+      scene.add(m);
+      items.push({ m, kind, state: 'belt', claimed: false });
+    }
+    function placeOn(r) {
+      const c = r.held; if (!c) return;
+      r.held = null; c.state = 'placed';
+      c.m.position.copy(r.slots[r.slot]);
+      items.splice(items.indexOf(c), 1);
+      r.stack.push(c); r.slot++; placed++;
+      if (r.slot >= r.slots.length) { r.slot = 0; r.clearAt = simT + 1.0; }
+    }
+    function clearStack(r) {
+      if (!r.clearAt || simT < r.clearAt) return;
+      const k = Math.min(1, (simT - r.clearAt) / 0.7);
+      r.stack.forEach(c => c.m.scale.setScalar(Math.max(0.001, 1 - ease(k))));
+      if (k >= 1) { r.stack.forEach(c => scene.remove(c.m)); r.stack = []; r.clearAt = 0; }
+    }
+
+    // ---------- 1 · brazo de 6 ejes que paletiza cubos ----------
     const ORDER = ['base', 'turret', 'j2motor', 'upper', 'elbow', 'forearm', 'wrist', 'flange', 'gripper', 'fingers'];
-    function makeArm(bx, px, pz, k) {
+    const arm = (() => {
+      const bx = 1.6, px = 2.65, pz = -0.75;
       const holder = new T.Group(); holder.position.set(bx, 0, 0); scene.add(holder);
       const rig = armRig(holder);
-      const pallet = part(B(0.98, 0.12, 0.98), px, 0.06, pz); scene.add(pallet);
-      queue(pallet, [0, 1.2, 0], 0.3 + k * 0.2);
+      ORDER.forEach((id, j) => (rig.parts[id] || []).forEach(m => queue(m, [Math.sin(j * 1.7) * 0.5, 0.9 + (j % 3) * 0.25, Math.cos(j * 1.3) * 0.5], 0.35 + j * 0.07)));
+      addQ(part(B(0.98, 0.12, 0.98), px, 0.06, pz), [0, 1.2, 0], 0.4);
       const slots = [];
       for (let l = 0; l < 2; l++) for (let i = 0; i < 4; i++)
-        slots.push(new T.Vector3(px + (i % 2 ? 0.2 : -0.2), 0.12 + CUBE / 2 + l * (CUBE + 0.004), pz + (i < 2 ? -0.2 : 0.2)));
-      const home = new T.Vector3(bx, 1.3, 1.0);
-      return { rig, base: new T.Vector3(bx, 0, 0), pickX: bx, home, cur: home.clone(), p0: new T.Vector3(),
-        grip: 0, gFrom: 0, seq: null, i: 0, t: 0, held: null, slots, slot: 0, stack: [], clearAt: 0, ang: { yaw: 0, e2: 0, q3: 0 }, state: 'En espera', line: 1 };
-    }
-    const arms = [makeArm(-1.5, -2.5, -0.75, 0), makeArm(1.5, 2.5, -0.75, 1)];
-
-    function solve(a) {
-      const ik = armIK(a.cur, a.base);
-      armPose(a.rig, ik.yaw, ik.e2, ik.q3, a.grip);
-      a.ang = ik;
-    }
-    function cylLerp(a, p, q, s, out) {
-      const ax = p.x - a.base.x, az = p.z - a.base.z, bx = q.x - a.base.x, bz = q.z - a.base.z;
-      const ta = Math.atan2(ax, az), ra = Math.hypot(ax, az), rb = Math.hypot(bx, bz);
-      let dt = Math.atan2(bx, bz) - ta;
-      dt = Math.atan2(Math.sin(dt), Math.cos(dt));
-      const t = ta + dt * s, r = ra + (rb - ra) * s;
-      return out.set(a.base.x + Math.sin(t) * r, p.y + (q.y - p.y) * s, a.base.z + Math.cos(t) * r);
-    }
-
-    const cubes = [];
-    const cubeGeo = B(CUBE, CUBE, CUBE);
-    const looks = [[MAT.fillWhite, MAT.lineBlue], [MAT.fillLight, MAT.line], [MAT.fill, MAT.line]];
-    let simT = 0, spawnClock = 0, spawnN = 0, placed = 0;
-    function spawn() {
-      const [f, l] = looks[spawnN % 3];
-      const m = part(cubeGeo, X0 - 0.1, CUBE_Y, BELT_Z, f, l);
-      scene.add(m);
-      cubes.push({ m, state: 'belt', owner: arms[spawnN % 2], claimed: false });
-      spawnN++;
-    }
-    const up = (v, h) => new T.Vector3(v.x, v.y + h, v.z);
-    function place(a) {
-      const c = a.held; if (!c) return;
-      a.held = null; c.state = 'placed';
-      c.m.position.copy(a.slots[a.slot]);
-      cubes.splice(cubes.indexOf(c), 1);
-      a.stack.push(c); a.slot++; placed++;
-      if (a.slot >= a.slots.length) { a.slot = 0; a.clearAt = simT + 1.0; }
-    }
-    function begin(a, c) {
+        slots.push(V(px + (i % 2 ? 0.2 : -0.2), 0.12 + CUBE / 2 + l * (CUBE + 0.004), pz + (i < 2 ? -0.2 : 0.2)));
+      const a = { rig, base: V(bx, 0, 0), pickX: bx, home: V(bx, 1.3, 1.0), cur: V(bx, 1.3, 1.0), p0: V(), grip: 0, gFrom: 0,
+        seq: null, i: 0, t: 0, held: null, slots, slot: 0, stack: [], clearAt: 0, label: V(bx, 2.25, 0) };
+      a.lerp = (p, q, s, out) => {
+        const ax = p.x - a.base.x, az = p.z - a.base.z, bx2 = q.x - a.base.x, bz = q.z - a.base.z;
+        const ta = Math.atan2(ax, az), ra = Math.hypot(ax, az), rb = Math.hypot(bx2, bz);
+        let d = Math.atan2(bx2, bz) - ta; d = Math.atan2(Math.sin(d), Math.cos(d));
+        const t = ta + d * s, r = ra + (rb - ra) * s;
+        return out.set(a.base.x + Math.sin(t) * r, p.y + (q.y - p.y) * s, a.base.z + Math.cos(t) * r);
+      };
+      return a;
+    })();
+    function armBegin(c) {
       c.claimed = true;
       const pos = () => c.m.position;
-      a.seq = [
-        { n: 'Aproximar', ln: 2, d: 1.05, g: 0, track: () => up(pos(), 0.36) },
-        { n: 'Bajar', ln: 3, d: 0.5, g: 0, track: () => pos().clone() },
-        { n: 'Sujetar', ln: 4, d: 0.3, g: 1, track: () => pos().clone(), end: () => { c.state = 'held'; a.held = c; } },
-        { n: 'Elevar', ln: 5, d: 0.5, g: 1, to: () => up(a.cur, 0.45) },
-        { n: 'Trasladar', ln: 6, d: 1.3, g: 1, to: () => up(a.slots[a.slot], 0.42) },
-        { n: 'Colocar', ln: 7, d: 0.5, g: 1, to: () => a.slots[a.slot].clone() },
-        { n: 'Soltar', ln: 8, d: 0.28, g: 0, to: () => a.cur.clone(), start: () => place(a) },
-        { n: 'Retirar', ln: 9, d: 0.4, g: 0, to: () => up(a.cur, 0.4) },
-        { n: 'Home', ln: 1, d: 0.95, g: 0, to: () => a.home.clone() },
+      arm.seq = [
+        { d: 1.05, g: 0, track: () => lift(pos(), 0.36) },
+        { d: 0.5, g: 0, track: () => pos().clone() },
+        { d: 0.3, g: 1, track: () => pos().clone(), end: () => { c.state = 'held'; arm.held = c; } },
+        { d: 0.5, g: 1, to: () => lift(arm.cur, 0.45) },
+        { d: 1.3, g: 1, to: () => lift(arm.slots[arm.slot], 0.42) },
+        { d: 0.5, g: 1, to: () => arm.slots[arm.slot].clone() },
+        { d: 0.28, g: 0, to: () => arm.cur.clone(), start: () => placeOn(arm) },
+        { d: 0.4, g: 0, to: () => lift(arm.cur, 0.4) },
+        { d: 0.95, g: 0, to: () => arm.home.clone() },
       ];
-      a.i = 0; a.t = 0; enter(a);
+      arm.i = 0; arm.t = 0; enter(arm);
     }
-    function enter(a) {
-      const s = a.seq[a.i];
-      a.p0.copy(a.cur); a.gFrom = a.grip;
-      if (s.start) s.start();
-      if (s.track) s.off = a.p0.clone().sub(s.track()); else s.goal = s.to();
-      a.state = s.n; a.line = s.ln;
+    function armSolve() {
+      const ik = armIK(arm.cur, arm.base);
+      armPose(arm.rig, ik.yaw, ik.e2, ik.q3, arm.grip);
+      if (arm.held) arm.held.m.position.copy(arm.cur);
     }
-    function pose(a, s, k) {
-      const e = ease(Math.min(1, k));
-      if (s.track) a.cur.copy(s.track()).addScaledVector(s.off, 1 - e);
-      else cylLerp(a, a.p0, s.goal, e, a.cur);
-      a.grip = a.gFrom + (s.g - a.gFrom) * Math.min(1, k / 0.7);
-    }
-    function stepArm(a, dt) {
-      if (a.seq) {
-        a.t += dt;
-        while (a.seq && a.t >= a.seq[a.i].d) {
-          const s = a.seq[a.i];
-          a.t -= s.d; pose(a, s, 1);
-          if (s.end) s.end();
-          a.i++;
-          if (a.i >= a.seq.length) { a.seq = null; a.state = 'En espera'; a.line = 1; a.t = 0; }
-          else enter(a);
-        }
-        if (a.seq) pose(a, a.seq[a.i], a.t / a.seq[a.i].d);
+
+    // ---------- 2 · robot delta (paralelo) que clasifica discos ----------
+    const delta = (() => {
+      const X = -2.1, Y = 1.85, Z = BELT_Z, RB = 0.3, LA = 0.42, LB = 1.1, RP = 0.09, TIP = 0.15, TZ = 0.72;
+      const g = new T.Group(); scene.add(g);
+      [0.36, 2.1].forEach(z => g.add(part(B(0.08, 2.0, 0.08), X, 1.0, z)));
+      g.add(part(B(0.1, 0.1, 1.82), X, 2.03, (0.36 + 2.1) / 2));
+      g.add(part(C(RB + 0.07, RB + 0.07, 0.07, 6), X, Y + 0.06, Z));
+      const angs = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
+      angs.forEach(f => g.add(part(B(0.13, 0.11, 0.13), X + Math.cos(f) * RB, Y, Z - Math.sin(f) * RB)));
+      const uppers = angs.map(() => { const m = rod(0.06); g.add(m); return m; });
+      const lowPos = new Float32Array(36);
+      const lowGeo = new T.BufferGeometry(); lowGeo.setAttribute('position', new T.BufferAttribute(lowPos, 3));
+      g.add(new T.LineSegments(lowGeo, MAT.line));
+      const plat = new T.Group();
+      plat.add(part(C(RP + 0.03, RP + 0.03, 0.04, 6)));
+      plat.add(part(C(0.03, 0.03, 0.08, 10), 0, -0.07, 0));
+      plat.add(part(C(0.05, 0.025, 0.04, 10), 0, -0.13, 0));
+      g.add(plat);
+      g.add(part(B(0.06, 0.48, 0.06), X, 0.24, TZ));
+      g.add(part(B(0.52, 0.05, 0.52), X, 0.505, TZ));
+      const slots = [];
+      for (let i = 0; i < 4; i++) slots.push(V(X + (i % 2 ? 0.12 : -0.12), 0.565, TZ + (i < 2 ? -0.12 : 0.12)));
+      const P = V(), J = V(), E = V(), A = V();
+      function solve(cur) {
+        P.set(cur.x, cur.y + TIP, cur.z);
+        const px = P.x - X, py = P.y - Y, pz = P.z - Z;
+        angs.forEach((f, i) => {
+          const c = Math.cos(f), s = Math.sin(f);
+          const xr = px * c - pz * s, zr = px * s + pz * c;
+          const dx = xr + RP - RB, dy = py;
+          const K = LB * LB - zr * zr - LA * LA - dx * dx - dy * dy;
+          const a = -2 * LA * dx, b = 2 * LA * dy, R = Math.hypot(a, b) || 1e-6;
+          const ang = Math.atan2(b, a), d = Math.acos(clamp(K / R, -1, 1));
+          let th = ang + d; const th2 = ang - d;
+          if (Math.cos(th2) > Math.cos(th)) th = th2;
+          const ex = RB + LA * Math.cos(th), ey = -LA * Math.sin(th);
+          J.set(X + c * RB, Y, Z - s * RB);
+          E.set(X + c * ex, Y + ey, Z - s * ex);
+          setRod(uppers[i], J, E);
+          A.set(P.x + c * RP, P.y, P.z - s * RP);
+          const tx = s * 0.05, tz = c * 0.05;
+          lowPos.set([E.x + tx, E.y, E.z + tz, A.x + tx, A.y, A.z + tz, E.x - tx, E.y, E.z - tz, A.x - tx, A.y, A.z - tz], i * 12);
+        });
+        lowGeo.attributes.position.needsUpdate = true;
+        plat.position.copy(P);
       }
-      solve(a);
-      if (a.held) a.held.m.position.copy(a.cur);
-      if (a.clearAt && simT >= a.clearAt) {
-        const k = Math.min(1, (simT - a.clearAt) / 0.7);
-        a.stack.forEach(c => c.m.scale.setScalar(Math.max(0.001, 1 - ease(k))));
-        if (k >= 1) { a.stack.forEach(c => scene.remove(c.m)); a.stack = []; a.clearAt = 0; }
-      }
+      queue(g, [0, 1.8, 0], 0.55);
+      return { g, X, cur: V(X, 1.0, 1.05), home: V(X, 1.0, 1.05), p0: V(), grip: 0, gFrom: 0, seq: null, i: 0, t: 0,
+        held: null, slots, slot: 0, stack: [], clearAt: 0, solve, lerp: linear, label: V(X, 2.2, Z) };
+    })();
+    function deltaBegin(it) {
+      const d = delta; it.claimed = true;
+      const top = () => V(it.m.position.x, it.m.position.y + 0.035, it.m.position.z);
+      d.seq = [
+        { d: 0.36, g: 0, track: () => lift(top(), 0.24) },
+        { d: 0.16, g: 0, track: top },
+        { d: 0.08, g: 1, track: top, end: () => { it.state = 'held'; d.held = it; } },
+        { d: 0.16, g: 1, to: () => lift(d.cur, 0.24) },
+        { d: 0.34, g: 1, to: () => lift(d.slots[d.slot], 0.275) },
+        { d: 0.16, g: 1, to: () => lift(d.slots[d.slot], 0.035) },
+        { d: 0.07, g: 0, to: () => d.cur.clone(), start: () => placeOn(d) },
+        { d: 0.16, g: 0, to: () => lift(d.cur, 0.22) },
+        { d: 0.3, g: 0, to: () => d.home.clone() },
+      ];
+      d.i = 0; d.t = 0; enter(d);
     }
+
+    // ---------- 3 · robot SCARA que ensambla en una mesa ----------
+    const scara = (() => {
+      const BX = -0.35, BZ = -1.25, A1 = 0.5, A2 = 0.42, H = 1.15, UPY = 1.05;
+      const g = new T.Group(); scene.add(g);
+      g.add(part(B(1.4, 0.06, 0.5), -0.35, 0.7, -0.55));
+      [-1, 1].forEach(sx => [-1, 1].forEach(sz => g.add(part(B(0.05, 0.67, 0.05), -0.35 + sx * 0.64, 0.335, -0.55 + sz * 0.2))));
+      const PA = V(-0.8, 0.77, -0.55), PB = V(0.1, 0.77, -0.55);
+      [PA, PB].forEach(p => g.add(part(B(0.18, 0.04, 0.18), p.x, 0.75, p.z)));
+      g.add(part(C(0.15, 0.19, H - 0.06, 14), BX, (H - 0.06) / 2, BZ));
+      const j1 = new T.Group(); j1.position.set(BX, H, BZ); g.add(j1);
+      j1.add(part(C(0.14, 0.14, 0.12, 14)));
+      j1.add(part(B(A1, 0.1, 0.17), A1 / 2, 0, 0));
+      const j2 = new T.Group(); j2.position.set(A1, 0.1, 0); j1.add(j2);
+      j2.add(part(C(0.11, 0.11, 0.12, 14)));
+      j2.add(part(B(A2, 0.09, 0.13), A2 / 2, 0, 0));
+      j2.add(part(C(0.07, 0.07, 0.14, 12), A2, 0.04, 0));
+      const quill = part(C(0.025, 0.025, 0.7, 10)); quill.position.x = A2; j2.add(quill);
+      const tool = new T.Group(); tool.position.x = A2; j2.add(tool);
+      tool.add(part(C(0.055, 0.055, 0.04, 12)));
+      const fa = part(B(0.02, 0.07, 0.05), -0.075, -0.05, 0), fb = part(B(0.02, 0.07, 0.05), 0.075, -0.05, 0);
+      tool.add(fa, fb);
+      const piece = part(C(0.05, 0.05, 0.1, 12), PA.x, PA.y + 0.05, PA.z, MAT.fillWhite, MAT.lineBlue); g.add(piece);
+      const s = { g, cur: V(PA.x, UPY, PA.z), p0: V(), grip: 0, gFrom: 0, seq: null, i: 0, t: 0, held: false, src: PA, dst: PB, lerp: linear, label: V(BX, 1.5, BZ) };
+      s.solve = () => {
+        const t = s.cur, dx = t.x - BX, dz = t.z - BZ;
+        const q2 = Math.acos(clamp((dx * dx + dz * dz - A1 * A1 - A2 * A2) / (2 * A1 * A2), -1, 1));
+        const q1 = Math.atan2(-dz, dx) - Math.atan2(A2 * Math.sin(q2), A1 + A2 * Math.cos(q2));
+        j1.rotation.y = q1; j2.rotation.y = q2;
+        const ty = t.y + 0.05 - (H + 0.1);
+        tool.position.y = ty; quill.position.y = ty + 0.37;
+        const gap = 0.075 - 0.013 * s.grip;
+        fa.position.x = -gap; fb.position.x = gap;
+        if (s.held) piece.position.copy(t);
+      };
+      s.cycle = () => {
+        const a = s.src, b = s.dst, hold = a.y + 0.05, at = (p, y) => V(p.x, y, p.z);
+        s.seq = [
+          { d: 0.32, g: 0, to: () => at(a, hold) },
+          { d: 0.14, g: 1, to: () => at(a, hold), end: () => { s.held = true; } },
+          { d: 0.3, g: 1, to: () => at(a, UPY) },
+          { d: 0.8, g: 1, to: () => at(b, UPY) },
+          { d: 0.3, g: 1, to: () => at(b, hold) },
+          { d: 0.14, g: 0, to: () => at(b, hold), start: () => { s.held = false; piece.position.set(b.x, hold, b.z); } },
+          { d: 0.3, g: 0, to: () => at(b, UPY) },
+        ];
+        s.i = 0; s.t = 0; enter(s);
+      };
+      s.after = () => { const t = s.src; s.src = s.dst; s.dst = t; s.cycle(); };
+      s.cycle();
+      queue(g, [0, 1.5, 0], 0.7);
+      return s;
+    })();
+
+    // ---------- 4 · robot móvil AMR que recorre el pasillo ----------
+    const amr = (() => {
+      const g = new T.Group(); scene.add(g);
+      g.add(part(B(0.8, 0.2, 0.55), 0, 0.16, 0));
+      [-1, 1].forEach(sx => [-1, 1].forEach(sz => g.add(alongZ(part(C(0.07, 0.07, 0.05, 12), sx * 0.27, 0.07, sz * 0.29)))));
+      g.add(part(C(0.07, 0.07, 0.08, 12), 0.3, 0.3, 0));
+      g.add(part(B(0.46, 0.28, 0.4), -0.08, 0.4, 0, MAT.fillLight));
+      const scan = lines([0, 0, 0, 0.75, 0, 0], MAT.mid); scan.position.set(0.3, 0.3, 0); g.add(scan);
+      const XA = -3.1, XB = 3.1, ZA = -1.95, ZB = -2.55, R = (ZA - ZB) / 2, ZC = (ZA + ZB) / 2;
+      const Ls = XB - XA, Lc = Math.PI * R, total = 2 * Ls + 2 * Lc;
+      function at(s, out) {
+        s = ((s % total) + total) % total;
+        if (s < Ls) return out.set(XA + s, 0, ZA);
+        s -= Ls;
+        if (s < Lc) { const a = s / R; return out.set(XB + Math.sin(a) * R, 0, ZC + Math.cos(a) * R); }
+        s -= Lc;
+        if (s < Ls) return out.set(XB - s, 0, ZB);
+        s -= Ls;
+        const a = s / R; return out.set(XA - Math.sin(a) * R, 0, ZC - Math.cos(a) * R);
+      }
+      const o = { g, s: 1.2, label: V(), p: V(), q: V() };
+      o.update = (dt) => {
+        o.s += dt * 0.65;
+        at(o.s, o.p); at(o.s + 0.05, o.q);
+        g.position.copy(o.p);
+        g.rotation.y = Math.atan2(-(o.q.z - o.p.z), o.q.x - o.p.x);
+        scan.rotation.y += dt * 6;
+        o.label.set(o.p.x, 0.75, o.p.z);
+      };
+      o.update(0);
+      queue(g, [0, 1.2, 0], 0.85);
+      return o;
+    })();
+
+    // ---------- 5 · dron de inventario ----------
+    const drone = (() => {
+      const g = new T.Group(); scene.add(g);
+      g.add(part(B(0.26, 0.08, 0.26)));
+      [Math.PI / 4, -Math.PI / 4].forEach(a => { const b = part(B(0.5, 0.025, 0.035)); b.rotation.y = a; g.add(b); });
+      const blades = [];
+      [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([sx, sz]) => {
+        const x = sx * 0.177, z = sz * 0.177;
+        const r = ring(0.11, 0.03, MAT.mid, 24); r.position.set(x, 0, z); g.add(r);
+        g.add(part(C(0.02, 0.02, 0.05, 8), x, 0.02, z));
+        const bl = lines([-0.1, 0, 0, 0.1, 0, 0]); bl.position.set(x, 0.05, z); g.add(bl); blades.push(bl);
+      });
+      g.add(part(B(0.08, 0.07, 0.08), 0, -0.08, 0));
+      const o = { g, t: 0, label: V() };
+      o.update = (dt) => {
+        o.t += dt;
+        const t = o.t * 0.32;
+        g.position.set(0.6 + Math.sin(t) * 1.5, 2.2 + Math.sin(o.t * 1.9) * 0.05, -0.8 + Math.sin(t * 2) * 0.45);
+        g.rotation.y = Math.sin(t) * 0.6;
+        g.rotation.z = -Math.cos(t) * 0.12;
+        blades.forEach((b, i) => { b.rotation.y += dt * (i % 2 ? 30 : -30); });
+        o.label.set(g.position.x, g.position.y + 0.25, g.position.z);
+      };
+      o.update(0);
+      queue(g, [0, 1.5, 0], 1.0);
+      return o;
+    })();
+
     function step(dt) {
       simT += dt;
       slatShift = (slatShift + SPEED * dt) % (X1 - X0);
       spawnClock -= dt;
       if (spawnClock <= 0) { spawn(); spawnClock += INTERVAL; }
-      for (const c of cubes) {
-        if (c.state !== 'belt') continue;
-        c.m.position.x += SPEED * dt;
-        const a = c.owner, x = c.m.position.x;
-        if (!c.claimed && !a.seq && x >= a.pickX - 0.75 && x <= a.pickX + 0.25) begin(a, c);
-        if (x > X1 + 0.2) c.state = 'gone';
+      for (const it of items) {
+        if (it.state !== 'belt') continue;
+        it.m.position.x += SPEED * dt;
+        const x = it.m.position.x;
+        if (!it.claimed) {
+          if (it.kind === 'cube' && !arm.seq && x >= arm.pickX - 0.75 && x <= arm.pickX + 0.25) armBegin(it);
+          else if (it.kind === 'disc' && !delta.seq && x >= delta.X - 0.4 && x <= delta.X + 0.15) deltaBegin(it);
+        }
+        if (x > X1 + 0.2) it.state = 'gone';
       }
-      for (let i = cubes.length - 1; i >= 0; i--) if (cubes[i].state === 'gone') { scene.remove(cubes[i].m); cubes.splice(i, 1); }
-      arms.forEach(a => stepArm(a, dt));
+      for (let i = items.length - 1; i >= 0; i--) if (items[i].state === 'gone') { scene.remove(items[i].m); items.splice(i, 1); }
+      run(arm, dt); armSolve();
+      run(delta, dt); delta.solve(delta.cur);
+      if (delta.held) delta.held.m.position.set(delta.cur.x, delta.cur.y - 0.035, delta.cur.z);
+      run(scara, dt); scara.solve();
+      clearStack(arm); clearStack(delta);
+      amr.update(dt); drone.update(dt);
     }
 
-    // Arranca con la celda ya en marcha
+    // Arranca con la línea ya en marcha
     for (let i = 0; i < 26 * 30; i++) step(1 / 30);
     updateSlats();
 
-    // Ensamble de entrada: cada pieza del robot llega a su lugar
-    arms.forEach((a, k) => ORDER.forEach((id, j) => (a.rig.parts[id] || []).forEach(m => {
-      queue(m, [Math.sin(j * 1.7 + k) * 0.5, 0.9 + (j % 3) * 0.25, Math.cos(j * 1.3 + k) * 0.5], 0.35 + k * 0.22 + j * 0.07);
-    })));
+    // Ensamble de entrada
     const INTRO = intro.reduce((m, it) => Math.max(m, it.delay), 0) + 0.9;
     let introT = reduce ? INTRO : 0;
+    const callWrap = document.getElementById('callouts');
     function applyIntro() {
       const show = introT >= INTRO - 0.45;
-      cubes.forEach(c => { c.m.visible = show; });
-      arms.forEach(a => a.stack.forEach(c => { c.m.visible = show; }));
+      items.forEach(c => { c.m.visible = show; });
+      [arm, delta].forEach(r => r.stack.forEach(c => { c.m.visible = show; }));
+      if (callWrap) callWrap.style.opacity = show ? '1' : '0';
       intro.forEach(it => {
         const k = easeOut(clamp01((introT - it.delay) / 0.9));
         it.obj.position.copy(it.p0).addScaledVector(it.off, 1 - k);
@@ -321,21 +526,44 @@
     }
     applyIntro();
 
+    // Etiquetas numeradas, como globos de un plano
+    const calls = [
+      [1, 'Brazo de 6 ejes', () => arm.label],
+      [2, 'Robot delta', () => delta.label],
+      [3, 'Robot SCARA', () => scara.label],
+      [4, 'Robot móvil AMR', () => amr.label],
+      [5, 'Dron de inventario', () => drone.label],
+    ].map(([n, t, p]) => {
+      const el = document.createElement('span');
+      el.className = 'callout';
+      el.innerHTML = `<i>${n}</i><span>${t}</span>`;
+      if (callWrap) callWrap.appendChild(el);
+      return { el, p };
+    });
+    const pv = V();
+    let cw = 1, ch = 1;
+    function placeCalls() {
+      calls.forEach(c => {
+        pv.copy(c.p()).project(cam);
+        c.el.style.transform = `translate(${(((pv.x + 1) / 2) * cw - 10).toFixed(1)}px, ${(((1 - pv.y) / 2) * ch - 38).toFixed(1)}px)`;
+      });
+    }
+
     // Cámara isométrica con paralaje suave
-    let aspect = 1.4, px = 0, py = 0, tx = 0, ty = 0;
+    let aspect = 2, px = 0, py = 0, tx = 0, ty = 0;
     function size() {
       const r = stage.getBoundingClientRect();
       if (!r.width || !r.height) return;
       renderer.setSize(r.width, r.height, false);
-      aspect = r.width / r.height;
-      const narrow = aspect < 1.15;
-      fitOrtho(cam, aspect, narrow ? 3.2 : 3.45, narrow ? 1.7 : 1.85);
+      cw = r.width; ch = r.height; aspect = r.width / r.height;
+      const narrow = aspect < 1.2;
+      fitOrtho(cam, aspect, narrow ? 3.1 : 4.35, narrow ? 2.45 : 2.3);
     }
     function view(time) {
       px += (tx - px) * 0.05; py += (ty - py) * 0.05;
-      const intro = 1 - easeOut(clamp01(introT / INTRO));
-      const az = 0.62 + px * 0.12 + (reduce ? 0 : Math.sin(time * 0.1) * 0.06) + intro * 0.35;
-      const el = 0.5 - py * 0.05 + intro * 0.12;
+      const k = 1 - easeOut(clamp01(introT / INTRO));
+      const az = 0.62 + px * 0.12 + (reduce ? 0 : Math.sin(time * 0.1) * 0.05) + k * 0.35;
+      const el = 0.5 - py * 0.05 + k * 0.12;
       aim(cam, target, az, el);
     }
     stage.addEventListener('pointermove', e => {
@@ -345,40 +573,22 @@
     });
     stage.addEventListener('pointerleave', () => { tx = 0; ty = 0; });
 
-    // HUD
-    const $ = id => document.getElementById(id);
-    const hj = [1, 2, 3, 4, 5, 6].map(i => $('hj' + i));
-    const hx = $('hx'), hy = $('hy'), hz = $('hz'), hc = $('hudCount'), hs = $('hudState');
-    const progLines = [...document.querySelectorAll('.prog-l li')];
-    const deg = r => (r * 180) / Math.PI;
-    const f1 = v => (v < 0 ? '−' : '+') + Math.abs(v).toFixed(1);
-    function hud() {
-      const a = arms[0], g = a.ang, e3 = g.e2 - g.q3;
-      const v = [deg(g.yaw), 90 - deg(g.e2), deg(e3), 0, -deg(Math.PI / 2 + e3), deg(g.yaw)];
-      hj.forEach((el, i) => { el.textContent = f1(v[i]); });
-      hx.textContent = ((a.cur.x - a.base.x) * 1000).toFixed(0);
-      hy.textContent = ((a.cur.z - a.base.z) * 1000).toFixed(0);
-      hz.textContent = (a.cur.y * 1000).toFixed(0);
-      hc.textContent = String(placed).padStart(4, '0');
-      const building = introT < INTRO;
-      hs.textContent = building ? 'Ensamblando' : a.state;
-      progLines.forEach((li, i) => li.classList.toggle('on', !building && i + 1 === a.line));
-    }
-
+    const hc = document.getElementById('hudCount');
     let running = false, raf = 0, last = 0, hudT = 0;
-    function draw() { view(simT); renderer.render(scene, cam); stage.classList.add('is-live'); }
+    function draw() { view(simT); renderer.render(scene, cam); placeCalls(); stage.classList.add('is-live'); }
     function frame(now) {
       raf = 0;
       const dt = Math.min((now - last) / 1000, 0.05); last = now;
       if (introT < INTRO) { introT += dt; applyIntro(); }
       else { step(dt); updateSlats(); }
       draw();
-      hudT -= dt; if (hudT <= 0) { hud(); hudT = 0.12; }
+      hudT -= dt; if (hudT <= 0 && hc) { hc.textContent = String(placed).padStart(4, '0'); hudT = 0.2; }
       if (running) raf = requestAnimationFrame(frame);
     }
     function start() { if (running || reduce) return; running = true; last = performance.now(); raf = requestAnimationFrame(frame); }
     function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
-    size(); draw(); hud();
+    size(); draw();
+    if (hc) hc.textContent = String(placed).padStart(4, '0');
     repaint.push(() => { if (!running) draw(); });
     new ResizeObserver(() => { size(); if (!running) draw(); }).observe(stage);
     let inView = true;
