@@ -5,6 +5,7 @@
   const ctx = canvas.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = id => document.getElementById(id);
+  const tr = (t) => (window.i18n ? window.i18n.tr(t) : t);
   const ui = { gen: $('simGen'), rew: $('simRew'), sig: $('simSig'), k: $('simK'), status: $('simStatus'), push: $('simPush'), reset: $('simReset'), pause: $('simPause') };
 
   // ---------- física ----------
@@ -140,14 +141,14 @@
       ctx.strokeStyle = WHITE; ctx.beginPath(); ctx.moveTo(ax, y); ctx.lineTo(ax + L2, y);
       const d = Math.sign(L2); ctx.moveTo(ax + L2, y); ctx.lineTo(ax + L2 - d * 6, y - 4); ctx.moveTo(ax + L2, y); ctx.lineTo(ax + L2 - d * 6, y + 4); ctx.stroke();
     }
-    if (disp.pushT > 0) text('Empuje ' + (disp.pushDir > 0 ? '→' : '←'), ax, ay - len - bw - 10, 'center', WHITE);
-    if (disp.fallT > 0) text('Caída · reinicio', ax, ay - len - bw - 10, 'center', WHITE);
+    if (disp.pushT > 0) text(tr('Empuje') + ' ' + (disp.pushDir > 0 ? '→' : '←'), ax, ay - len - bw - 10, 'center', WHITE);
+    if (disp.fallT > 0) text(tr('Caída · reinicio'), ax, ay - len - bw - 10, 'center', WHITE);
 
     // Traza del ángulo (últimos 6 s)
     const pw = Math.min(W * 0.32, 220), ph = H * 0.2, px = 12, py = 30;
     ctx.strokeStyle = FAINT; ctx.strokeRect(px, py, pw, ph);
     ctx.beginPath(); ctx.moveTo(px, py + ph / 2); ctx.lineTo(px + pw, py + ph / 2); ctx.stroke();
-    text(W < 460 ? 'θ(t)' : 'θ(t) · últimos 6 s', px, py - 8);
+    text(W < 460 ? 'θ(t)' : tr('θ(t) · últimos 6 s'), px, py - 8);
     ctx.strokeStyle = WHITE; ctx.beginPath();
     disp.trail.forEach((v, i) => {
       const xx = px + (i / 299) * pw, yy = py + ph / 2 - Math.max(-1, Math.min(1, v / TMAX)) * (ph / 2);
@@ -158,7 +159,7 @@
     // Curva de aprendizaje
     const lw = Math.min(W * 0.32, 220), lx = W - lw - 12;
     ctx.strokeStyle = FAINT; ctx.strokeRect(lx, py, lw, ph);
-    text(W < 460 ? 'Recompensa' : 'Recompensa por generación', lx + lw, py - 8, 'right');
+    text(tr(W < 460 ? 'Recompensa' : 'Recompensa por generación'), lx + lw, py - 8, 'right');
     if (history.length) {
       const n = history.length, bwid = lw / 40;
       ctx.fillStyle = WHITE;
@@ -174,7 +175,8 @@
     ui.rew.textContent = (lastScore * 100).toFixed(0) + ' %';
     ui.sig.textContent = (sigma.reduce((a, b) => a + b, 0) / 4).toFixed(2);
     ui.k.textContent = '[' + mu.map(v => v.toFixed(1)).join(', ') + ']';
-    ui.status.textContent = paused ? 'En pausa' : stable ? 'Política estable · empújalo' : gen === 0 ? 'Sin entrenar' : 'Aprendiendo';
+    ui.status.textContent = tr(paused ? 'En pausa' : stable ? 'Política estable · empújalo' : gen === 0 ? 'Sin entrenar' : 'Aprendiendo');
+    ui.pause.textContent = tr(paused ? 'Reanudar' : 'Pausar');
   }
   function simulate(dt) {
     if (!stable) { genT += dt; if (genT >= 0.8) { genT = 0; generation(); } }
@@ -202,19 +204,18 @@
   resetLearning(); resetRobot();
   if (reduce) { while (!stable) generation(); resetRobot(); disp.s[2] = 0.02; }
   size(); draw(); updateUI();
-  ui.pause.textContent = paused ? 'Reanudar' : 'Pausar';
   ui.pause.setAttribute('aria-pressed', paused ? 'true' : 'false');
 
   ui.push.addEventListener('click', () => { push(); if (paused) { paused = false; syncPause(); } });
   ui.reset.addEventListener('click', () => { resetLearning(); resetRobot(); disp.trail = []; draw(); updateUI(); if (paused) { paused = false; syncPause(); } });
   ui.pause.addEventListener('click', () => { paused = !paused; syncPause(); });
   function syncPause() {
-    ui.pause.textContent = paused ? 'Reanudar' : 'Pausar';
     ui.pause.setAttribute('aria-pressed', paused ? 'true' : 'false');
     updateUI();
     paused ? stop() : start();
   }
   new ResizeObserver(() => { size(); draw(); }).observe(canvas);
+  document.addEventListener('langchange', () => { updateUI(); draw(); });
   new IntersectionObserver(([en]) => { visible = en.isIntersecting; visible ? start() : stop(); }).observe(canvas);
   document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
 })();

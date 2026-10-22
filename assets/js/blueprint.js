@@ -11,7 +11,8 @@
   const easeOut = s => 1 - Math.pow(1 - s, 3);
   const smooth = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); };
   const pad = n => String(n).padStart(2, '0');
-  const mm = v => Math.round(v).toLocaleString('es-MX');
+  const mm = v => Math.round(v).toLocaleString((window.i18n && window.i18n.locale) || 'es-MX');
+  const tr = (s, v) => (window.i18n ? window.i18n.tr(s, v) : s);
 
   /* ---------- material de plano: relleno del azul del papel + aristas blancas ---------- */
   const off = { polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 };
@@ -536,10 +537,12 @@
     ].map(([n, t, p]) => {
       const el = document.createElement('span');
       el.className = 'callout';
-      el.innerHTML = `<i>${n}</i><span>${t}</span>`;
       if (callWrap) callWrap.appendChild(el);
-      return { el, p };
+      return { el, p, n, t };
     });
+    const labelCalls = () => calls.forEach(c => { c.el.innerHTML = `<i>${c.n}</i><span>${tr(c.t)}</span>`; });
+    labelCalls();
+    document.addEventListener('langchange', labelCalls);
     const pv = V();
     let cw = 1, ch = 1;
     function placeCalls() {
@@ -949,7 +952,13 @@
     const fig = canvas.parentElement, card = canvas.closest('.sheet');
     const read = fig.querySelector('.fig-read b'), bar = fig.querySelector('.xbar');
     const fill = card && card.querySelector('[data-bom]');
-    if (fill) fill.innerHTML = `<b>${totalQty(def)}</b> piezas · <b>${def.parts.length}</b> números de parte<br>Escala <b>${def.scale}</b> · envolvente <b>${envelope(m.size0, def.unit)}</b>`;
+    const fillBom = () => {
+      if (!fill) return;
+      fill.innerHTML = tr('{n} piezas · {k} números de parte', { n: `<b>${totalQty(def)}</b>`, k: `<b>${def.parts.length}</b>` }) + '<br>' +
+        tr('Escala {s} · envolvente {e}', { s: `<b>${def.scale}</b>`, e: `<b>${envelope(m.size0, def.unit)}</b>` });
+    };
+    fillBom();
+    document.addEventListener('langchange', fillBom);
     const v = { canvas, renderer, scene, cam, pivot, asm, card, read, bar, e: 0, target: 0, visible: false, base: 0.55 + idx * 0.5, lastPct: -1 };
     const center = new T.Vector3(0, (yMin + yMax) / 2, 0);
     v.size = () => {
@@ -1097,26 +1106,35 @@
       const yMin = m.all.min.y - m.b0.min.y, yMax = m.all.max.y - m.b0.min.y;
       st.center.set(0, (yMin + yMax) / 2, 0);
       st.R = Math.hypot(m.rh, (yMax - yMin) / 2);
-      st.e = st.tE = 0; range.value = 0; out.textContent = '0 %'; setPressed(bExp, false); bExp.textContent = 'Explosionar';
+      st.e = st.tE = 0; range.value = 0; out.textContent = '0 %'; setPressed(bExp, false);
       st.zoom = 1; [st.az, st.el] = VIEWS.iso; st.tAz = st.tEl = null; setView('iso'); setSpin(!reduce);
-      $('cadTitle').textContent = def.name;
-      $('cadCrumbs').innerHTML = `Visor CAD <span>&gt;</span> ${def.code} <span>&gt;</span> <b>${def.crumbs}</b>`;
-      bomEl.innerHTML = def.parts.map((p, i) => `<tr data-id="${p.id}" aria-selected="false"><td>${pad(i + 1)}</td><td>${p.n}</td><td>${p.m}</td><td>${p.q}</td></tr>`).join('');
-      tbEl.innerHTML = [['Proyecto', def.name], ['Lámina', def.code], ['Escala', def.scale], ['Unidades', 'mm'], ['Piezas', totalQty(def)], ['Autor', 'D. Martínez · 2026']]
-        .map(([k, v]) => `<div><small>${k}</small><b>${v}</b></div>`).join('');
-      paint(); info();
+      relabel();
+      paint();
     }
+    // Textos del visor en el idioma activo
+    function relabel() {
+      if (!st.asm) return;
+      const def = st.asm.def;
+      bExp.textContent = tr(st.tE > 0.5 ? 'Ensamblar' : 'Explosionar');
+      $('cadTitle').textContent = tr(def.name);
+      $('cadCrumbs').innerHTML = `${tr('Visor CAD')} <span>&gt;</span> ${def.code} <span>&gt;</span> <b>${tr(def.crumbs)}</b>`;
+      bomEl.innerHTML = def.parts.map((p, i) => `<tr data-id="${p.id}" aria-selected="false"><td>${pad(i + 1)}</td><td>${tr(p.n)}</td><td>${tr(p.m)}</td><td>${p.q}</td></tr>`).join('');
+      tbEl.innerHTML = [['Proyecto', tr(def.name)], ['Lámina', def.code], ['Escala', def.scale], ['Unidades', 'mm'], ['Piezas', totalQty(def)], ['Autor', 'D. Martínez · 2026']]
+        .map(([k, v]) => `<div><small>${tr(k)}</small><b>${v}</b></div>`).join('');
+      info();
+    }
+    document.addEventListener('langchange', relabel);
 
     function info() {
       const def = st.asm.def;
       if (!st.sel) {
-        selEl.innerHTML = `<p class="label">Ensamble completo</p><h3>${def.name}</h3>
-          <dl><dt>Piezas</dt><dd>${totalQty(def)} en ${def.parts.length} números de parte</dd><dt>Envolvente</dt><dd>${envelope(st.m.size0, def.unit)}</dd><dt>Escala</dt><dd>${def.scale}</dd></dl>
-          <p>${def.note}</p>`;
+        selEl.innerHTML = `<p class="label">${tr('Ensamble completo')}</p><h3>${tr(def.name)}</h3>
+          <dl><dt>${tr('Piezas')}</dt><dd>${tr('{a} en {b} números de parte', { a: totalQty(def), b: def.parts.length })}</dd><dt>${tr('Envolvente')}</dt><dd>${envelope(st.m.size0, def.unit)}</dd><dt>${tr('Escala')}</dt><dd>${def.scale}</dd></dl>
+          <p>${tr(def.note)}</p>`;
       } else {
         const p = st.asm.parts.get(st.sel), meta = p.meta;
-        selEl.innerHTML = `<p class="label">Pieza ${pad(p.index + 1)} de ${def.parts.length}</p><h3>${meta.n}</h3>
-          <dl><dt>Material</dt><dd>${meta.m}</dd><dt>Proceso</dt><dd>${meta.p}</dd><dt>Cantidad</dt><dd>${meta.q}</dd><dt>Envolvente</dt><dd>${envelope(p.size, def.unit)}${meta.q > 1 ? ' c/u' : ''}</dd></dl>`;
+        selEl.innerHTML = `<p class="label">${tr('Pieza {a} de {b}', { a: pad(p.index + 1), b: def.parts.length })}</p><h3>${tr(meta.n)}</h3>
+          <dl><dt>${tr('Material')}</dt><dd>${tr(meta.m)}</dd><dt>${tr('Proceso')}</dt><dd>${tr(meta.p)}</dd><dt>${tr('Cantidad')}</dt><dd>${meta.q}</dd><dt>${tr('Envolvente')}</dt><dd>${envelope(p.size, def.unit)}${meta.q > 1 ? ' ' + tr('c/u') : ''}</dd></dl>`;
       }
       bomEl.querySelectorAll('tr').forEach(tr => tr.setAttribute('aria-selected', tr.dataset.id === st.sel ? 'true' : 'false'));
     }
@@ -1153,9 +1171,9 @@
     viewBtns.forEach(b => b.addEventListener('click', () => { [st.tAz, st.tEl] = VIEWS[b.dataset.view]; setView(b.dataset.view); setSpin(false); }));
     bExp.addEventListener('click', () => {
       st.tE = st.tE > 0.5 ? 0 : 1;
-      setPressed(bExp, st.tE === 1); bExp.textContent = st.tE === 1 ? 'Ensamblar' : 'Explosionar';
+      setPressed(bExp, st.tE === 1); bExp.textContent = tr(st.tE === 1 ? 'Ensamblar' : 'Explosionar');
     });
-    range.addEventListener('input', () => { st.tE = range.value / 100; setPressed(bExp, st.tE > 0.5); bExp.textContent = st.tE > 0.5 ? 'Ensamblar' : 'Explosionar'; });
+    range.addEventListener('input', () => { st.tE = range.value / 100; setPressed(bExp, st.tE > 0.5); bExp.textContent = tr(st.tE > 0.5 ? 'Ensamblar' : 'Explosionar'); });
     bSpin.addEventListener('click', () => setSpin(!st.spin));
     bDims.addEventListener('click', () => { st.dims = !st.dims; setPressed(bDims, st.dims); dimGroup.visible = st.dims; dimsEl.hidden = !st.dims; });
     bFit.addEventListener('click', () => { st.zoom = 1; [st.tAz, st.tEl] = VIEWS.iso; setView('iso'); });

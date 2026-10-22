@@ -2,6 +2,7 @@
 (function ui() {
   const root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const I = window.i18n || { t: k => k, tr: s => s };
   const clamp01 = v => Math.max(0, Math.min(1, v));
   const easeOut = s => 1 - Math.pow(1 - s, 3);
 
@@ -19,10 +20,38 @@
   const mail = document.getElementById('mail');
   if (copyBtn && mail) copyBtn.addEventListener('click', () => {
     const label = copyBtn.querySelector('span');
-    const done = (t) => { label.textContent = t; setTimeout(() => { label.textContent = 'Copiar'; }, 1800); };
+    const done = (t) => { label.textContent = I.tr(t); setTimeout(() => { label.textContent = I.tr('Copiar'); }, 1800); };
     const select = () => { const r = document.createRange(); r.selectNodeContents(mail); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done('Seleccionado'); };
     try { navigator.clipboard.writeText(mail.textContent.trim()).then(() => done('Copiado'), select); } catch (e) { select(); }
   });
+  const copyLabel = () => { if (copyBtn) copyBtn.querySelector('span').textContent = I.tr('Copiar'); };
+  copyLabel();
+  document.addEventListener('langchange', copyLabel);
+
+  // ---------- mapa multiespectral del cultivo (lámina 06) ----------
+  document.querySelectorAll('svg[data-heat]').forEach(svg => {
+    const NS = 'http://www.w3.org/2000/svg';
+    const scan = svg.querySelector('.scan');
+    let seed = 7;
+    const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+    const hot = [[13, 1], [14, 2], [5, 4], [6, 4], [9, 0]];
+    for (let r = 0; r < 6; r++) for (let c = 0; c < 18; c++) {
+      const cell = document.createElementNS(NS, 'rect');
+      cell.setAttribute('x', 12 + c * 21); cell.setAttribute('y', 8 + r * 21);
+      cell.setAttribute('width', 19); cell.setAttribute('height', 19);
+      const isHot = hot.some(([hc, hr]) => hc === c && hr === r);
+      cell.setAttribute('class', isHot ? 'cell hot' : 'cell');
+      cell.style.setProperty('--o', (0.08 + rnd() * 0.32).toFixed(2));
+      svg.insertBefore(cell, scan);
+    }
+    hot.forEach(([c, r]) => {
+      const ring = document.createElementNS(NS, 'circle');
+      ring.setAttribute('cx', 12 + c * 21 + 9.5); ring.setAttribute('cy', 8 + r * 21 + 9.5); ring.setAttribute('r', 13);
+      ring.setAttribute('class', 'flag');
+      svg.insertBefore(ring, scan);
+    });
+  });
+  if (reduce) document.querySelectorAll('svg').forEach(s => { if (s.pauseAnimations) s.pauseAnimations(); });
 
   // ---------- desplazamiento suave (solo con mouse o trackpad) ----------
   let lenis = null;
@@ -78,12 +107,12 @@
   measureOffsets();
 
   let current = -1;
-  function setSheet(i) {
-    if (i === current) return;
+  function setSheet(i, force) {
+    if (i === current && !force) return;
     current = i;
     const sec = pages[i];
     if (siN && siT) {
-      siN.textContent = sec.dataset.page; siT.textContent = sec.dataset.title;
+      siN.textContent = sec.dataset.page; siT.textContent = I.t('page.' + sec.id).replace(/<[^>]+>/g, '');
       [siN, siT].forEach(el => { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); });
     }
     menuLinks.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + sec.id ? 'true' : 'false'));
@@ -135,6 +164,7 @@
   const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } };
   addEventListener('scroll', request, { passive: true });
   addEventListener('resize', () => { measureOffsets(); request(); });
+  document.addEventListener('langchange', () => { if (current >= 0) setSheet(current, true); measureOffsets(); request(); });
   update();
 
   // ---------- contadores ----------

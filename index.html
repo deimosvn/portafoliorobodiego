@@ -8,12 +8,13 @@
 <meta property="og:title" content="Diego Eduardo Martínez Cruz · Ingeniería mecatrónica, robótica y startups">
 <meta property="og:description" content="Robótica industrial, AI Physics, computación cuántica, diseño CAD y startups desde Mexicali, Baja California.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="assets/img/qubiko.webp">
 <meta name="theme-color" content="#1F56B4">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231F56B4'/%3E%3Cpath d='M9 24V8h6a8 8 0 0 1 0 16zM20 8v16' fill='none' stroke='white' stroke-width='2.4'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..900&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/styles.css?v=9">
+<link rel="stylesheet" href="assets/css/styles.css?v=12">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -25,66 +26,78 @@
   <symbol id="i-cube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></g></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 3.9 5.8 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-5.8-3.9-9S9.4 5.8 12 3z"/></g></symbol>
 </svg>
 
-<a class="skip" href="#main">Saltar al contenido</a>
+<a class="skip" href="#main" data-i18n="ui.skip">Saltar al contenido</a>
 
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="#inicio"><i></i><span>D. E. Martínez Cruz</span></a>
     <ul class="menu">
-      <li><a href="#perfil">Perfil</a></li>
-      <li><a href="#startups">Startups</a></li>
-      <li><a href="#ingenieria">Ingeniería</a></li>
-      <li><a href="#diseno">CAD</a></li>
-      <li><a href="#experiencia">Experiencia</a></li>
-      <li><a href="#logros">Logros</a></li>
-      <li><a href="#prensa">Prensa</a></li>
+      <li><a href="#perfil" data-i18n="page.perfil">Perfil</a></li>
+      <li><a href="#startups" data-i18n="page.startups">Startups</a></li>
+      <li><a href="#ingenieria" data-i18n="page.ingenieria">Ingeniería</a></li>
+      <li><a href="#diseno" data-i18n="nav.cad">CAD</a></li>
+      <li><a href="#experiencia" data-i18n="page.experiencia">Experiencia</a></li>
+      <li><a href="#logros" data-i18n="page.logros">Logros</a></li>
+      <li><a href="#prensa" data-i18n="page.prensa">Prensa</a></li>
     </ul>
     <div class="top-actions">
-      <p class="sheet-ind" aria-hidden="true">Hoja <span class="si-n" id="siN">01</span>/10<span class="si-t" id="siT">Inicio</span></p>
-      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar entre tema claro y oscuro">
+      <p class="sheet-ind" aria-hidden="true"><span data-i18n="ui.sheet">Hoja</span> <span class="si-n" id="siN">01</span>/10<span class="si-t" id="siT">Inicio</span></p>
+      <label class="lang" title="Idioma" data-i18n-attr="title:ui.lang"><svg><use href="#i-globe"/></svg>
+        <select id="langSel" aria-label="Idioma" data-i18n-attr="aria-label:ui.lang">
+          <option value="es">ES</option><option value="en">EN</option><option value="ja">日本語</option><option value="zh">中文</option>
+        </select>
+      </label>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar entre tema claro y oscuro" data-i18n-attr="aria-label:ui.theme">
         <svg class="i-moon"><use href="#i-moon"/></svg><svg class="i-sun"><use href="#i-sun"/></svg>
       </button>
-      <button class="icon-btn idx-btn" type="button" popovertarget="index" aria-label="Abrir índice de secciones"><svg><use href="#i-menu"/></svg></button>
-      <a class="btn sm top-cta" href="#contacto">Contacto</a>
+      <button class="icon-btn idx-btn" type="button" popovertarget="index" aria-label="Abrir índice de secciones" data-i18n-attr="aria-label:ui.index"><svg><use href="#i-menu"/></svg></button>
+      <a class="btn sm top-cta" href="#contacto" data-i18n="page.contacto">Contacto</a>
     </div>
   </div>
   <i class="progress" aria-hidden="true"></i>
 </header>
 
-<nav class="index" id="index" popover aria-label="Índice de secciones">
+<nav class="index" id="index" popover aria-label="Índice de secciones" data-i18n-attr="aria-label:ui.indexName">
   <div class="index-in">
-    <div class="index-top"><p class="label">Índice de hojas</p><button class="icon-btn" type="button" popovertarget="index" popovertargetaction="hide" aria-label="Cerrar índice"><svg><use href="#i-close"/></svg></button></div>
+    <div class="index-top"><p class="label" data-i18n="ui.indexTitle">Índice de hojas</p><button class="icon-btn" type="button" popovertarget="index" popovertargetaction="hide" aria-label="Cerrar índice" data-i18n-attr="aria-label:ui.close"><svg><use href="#i-close"/></svg></button></div>
     <ol>
-      <li><a href="#inicio"><span>01</span>Inicio</a></li>
-      <li><a href="#perfil"><span>02</span>Perfil</a></li>
-      <li><a href="#startups"><span>03</span>Startups</a></li>
-      <li><a href="#ingenieria"><span>04</span>Ingeniería</a></li>
-      <li><a href="#diseno"><span>05</span>Diseños CAD</a></li>
-      <li><a href="#experiencia"><span>06</span>Experiencia</a></li>
-      <li><a href="#logros"><span>07</span>Logros</a></li>
-      <li><a href="#prensa"><span>08</span>Prensa</a></li>
-      <li><a href="#formacion"><span>09</span>Certificaciones</a></li>
-      <li><a href="#contacto"><span>10</span>Contacto</a></li>
+      <li><a href="#inicio"><span>01</span><b data-i18n="page.inicio">Inicio</b></a></li>
+      <li><a href="#perfil"><span>02</span><b data-i18n="page.perfil">Perfil</b></a></li>
+      <li><a href="#startups"><span>03</span><b data-i18n="page.startups">Startups</b></a></li>
+      <li><a href="#ingenieria"><span>04</span><b data-i18n="page.ingenieria">Ingeniería</b></a></li>
+      <li><a href="#diseno"><span>05</span><b data-i18n="page.diseno">Diseños CAD</b></a></li>
+      <li><a href="#experiencia"><span>06</span><b data-i18n="page.experiencia">Experiencia</b></a></li>
+      <li><a href="#logros"><span>07</span><b data-i18n="page.logros">Logros</b></a></li>
+      <li><a href="#prensa"><span>08</span><b data-i18n="page.prensa">Prensa</b></a></li>
+      <li><a href="#formacion"><span>09</span><b data-i18n="page.formacion">Certificaciones</b></a></li>
+      <li><a href="#contacto"><span>10</span><b data-i18n="page.contacto">Contacto</b></a></li>
     </ol>
+    <div class="idx-lang" role="group" aria-label="Idioma" data-i18n-attr="aria-label:ui.lang">
+      <button type="button" data-lang="es">Español</button><button type="button" data-lang="en">English</button><button type="button" data-lang="ja">日本語</button><button type="button" data-lang="zh">中文</button>
+    </div>
   </div>
 </nav>
 
 <main id="main">
 
 <!-- 01 · INICIO -->
-<section class="hero page" id="inicio" data-page="01" data-title="Inicio">
+<section class="hero page" id="inicio" data-page="01">
   <div class="wrap">
     <article class="plate">
       <div class="plate-top hero-top">
-        <h1 class="h1 hero-name"><span>Diego Eduardo</span> <span>Martínez Cruz</span></h1>
+        <div>
+          <h1 class="h1 hero-name"><span>Diego Eduardo</span> <span>Martínez Cruz</span></h1>
+          <p class="name-alt" data-i18n="hero.namealt"></p>
+        </div>
         <div class="hero-aside">
-          <p class="label">Ingeniero mecatrónico · Fundador y CEO de Qubiko</p>
-          <p class="mono-p">Robótica industrial, IA y startups que hacen accesible la tecnología, desde Mexicali, Baja California.</p>
+          <p class="label" data-i18n="hero.role">Ingeniero mecatrónico · Fundador y CEO de Qubiko</p>
+          <p class="mono-p" data-i18n="hero.lede">Robótica industrial, IA y startups que hacen accesible la tecnología, desde Mexicali, Baja California.</p>
           <div class="hero-cta">
-            <a class="btn" href="#ingenieria">Ver proyectos <svg><use href="#i-down"/></svg></a>
-            <a class="btn ghost" href="#contacto">Contacto</a>
+            <a class="btn" href="#ingenieria"><span data-i18n="hero.cta1">Ver proyectos</span> <svg><use href="#i-down"/></svg></a>
+            <a class="btn ghost" href="#contacto" data-i18n="page.contacto">Contacto</a>
           </div>
         </div>
       </div>
@@ -102,135 +115,143 @@
             <path class="fb-l" d="M466 224v34M446 258h40M450 258v26M482 258v26"/>
             <path class="fb-f" d="M436 300h60v52h-60z"/>
           </svg>
-          <canvas id="cell" role="img" aria-label="Línea de manufactura animada en estilo de plano técnico con cinco tipos de robot: brazo de seis ejes, robot delta, robot SCARA, robot móvil y dron"></canvas>
+          <canvas id="cell" role="img" aria-label="Línea de manufactura animada con cinco tipos de robot: brazo de seis ejes, robot delta, robot SCARA, robot móvil y dron" data-i18n-attr="aria-label:hero.canvas"></canvas>
           <div class="callouts" id="callouts" aria-hidden="true"></div>
           <div class="xh" aria-hidden="true"><i class="h"></i><i class="v"></i><span>X 0 · Y 0</span></div>
-          <p class="fig-label">Fig. 01 · Línea de manufactura · 5 tipos de robot</p>
-          <p class="hud hud-tr"><span class="led"></span><b>Auto</b> · Piezas <b id="hudCount">0000</b></p>
-          <p class="hud hud-legend" aria-hidden="true"><b>1</b> 6 ejes · <b>2</b> Delta · <b>3</b> SCARA · <b>4</b> AMR · <b>5</b> Dron</p>
+          <p class="fig-label" data-i18n="hero.fig">Fig. 01 · Línea de manufactura · 5 tipos de robot</p>
+          <p class="hud hud-tr"><span class="led"></span><b>Auto</b> · <span data-i18n="hero.pieces">Piezas</span> <b id="hudCount">0000</b></p>
+          <p class="hud hud-legend" aria-hidden="true" data-i18n="hero.legend"><b>1</b> 6 ejes · <b>2</b> Delta · <b>3</b> SCARA · <b>4</b> AMR · <b>5</b> Dron</p>
         </div>
       </div>
     </article>
 
     <div class="metrics">
-      <div class="metric" data-anim><p class="num" data-count="2000" data-prefix="+">+2,000</p><p>estudiantes formados en robótica</p></div>
-      <div class="metric" data-anim><p class="num">1.<sup>er</sup></p><p>lugar nacional Bécalos × POSiBLE 2026</p></div>
-      <div class="metric" data-anim><p class="num" data-count="10">10</p><p>hackatones, con NASA Space Apps y Talent Land</p></div>
-      <div class="metric" data-anim><p class="num" data-count="100" data-prefix="Top ">Top 100</p><p>startups LATAM en Potencia UP 2026</p></div>
+      <div class="metric" data-anim><p class="num" data-count="2000" data-prefix="+">+2,000</p><p data-i18n="m.1">estudiantes formados en robótica</p></div>
+      <div class="metric" data-anim><p class="num" data-i18n="m.2n">1.<sup>er</sup></p><p data-i18n="m.2">lugar nacional Bécalos × POSiBLE 2026</p></div>
+      <div class="metric" data-anim><p class="num" data-count="10">10</p><p data-i18n="m.3">hackatones, con NASA Space Apps y Talent Land</p></div>
+      <div class="metric" data-anim><p class="num" data-count="100" data-prefix="Top ">Top 100</p><p data-i18n="m.4">startups del futuro del trabajo y la educación en Latinoamérica</p></div>
     </div>
   </div>
 </section>
 
 <!-- 02 · PERFIL -->
-<section class="section page" id="perfil" data-page="02" data-title="Perfil">
+<section class="section page" id="perfil" data-page="02">
   <div class="wrap">
     <div class="sec-head" data-anim="head">
-      <p class="crumbs">Hoja 02 <span>&gt;</span> <b>Perfil</b></p>
-      <h2 class="h2">Ingeniería, educación e innovación</h2>
-      <p class="mono-p">Emprendedor tecnológico especializado en robótica, inteligencia artificial y physical AI.</p>
+      <p class="crumbs" data-i18n="perfil.crumbs">Hoja 02 <span>&gt;</span> <b>Perfil</b></p>
+      <h2 class="h2" data-i18n="perfil.h">Ingeniería, educación e innovación</h2>
+      <p class="mono-p" data-i18n="perfil.p">Emprendedor tecnológico especializado en robótica, inteligencia artificial y physical AI.</p>
     </div>
     <div class="bio" data-anim>
-      <p class="bio-lead">Soy ingeniero mecatrónico y fundador de Qubiko, una plataforma con IA que convierte una idea en un proyecto de robótica completo.</p>
-      <p>Antes de emprender programé robots FANUC y KUKA, PLC y variadores en planta para clientes como Kellogg’s, Bimbo e Intuitive Surgical. Desde 2023 he formado a más de 2,000 estudiantes, empezando con talleres gratuitos en comunidades con poco acceso a la tecnología.</p>
+      <p class="bio-lead" data-i18n="perfil.lead">Soy ingeniero mecatrónico y fundador de Qubiko, una plataforma con IA que convierte una idea en un proyecto de robótica completo.</p>
+      <p data-i18n="perfil.bio">Antes de emprender programé robots FANUC y KUKA, PLC y variadores en planta para clientes como Kellogg’s, Bimbo e Intuitive Surgical. Desde 2023 he formado a más de 2,000 estudiantes, empezando con talleres gratuitos en comunidades con poco acceso a la tecnología.</p>
     </div>
-    <h3 class="sub-title" data-anim>Dónde he trabajado</h3>
+    <h3 class="sub-title" data-anim data-i18n="perfil.where">Dónde he trabajado</h3>
     <div class="areas rail">
       <a class="area" href="#experiencia" data-anim>
         <div class="area-fig"><span class="no">01</span>
           <svg viewBox="0 0 200 110" aria-hidden="true"><path class="ln" pathLength="1" d="M20 78h160M20 88h160"/><circle class="ln" pathLength="1" cx="28" cy="83" r="5"/><circle class="ln" pathLength="1" cx="172" cy="83" r="5"/><rect class="fl" pathLength="1" x="44" y="56" width="22" height="22"/><rect class="fl" pathLength="1" x="92" y="56" width="22" height="22"/><rect class="fl" pathLength="1" x="140" y="56" width="22" height="22"/><path class="ln" pathLength="1" d="M120 18v26M112 18h16M40 88v14M100 88v14M160 88v14"/></svg>
         </div>
-        <div class="area-body"><h4>Automatización industrial</h4><p>Puesta en marcha y diagnóstico en líneas de alimentos.</p><ul class="tags"><li>Kellogg’s</li><li>Bimbo</li></ul></div>
+        <div class="area-body"><h4 data-i18n="a1.h">Automatización industrial</h4><p data-i18n="a1.p">Puesta en marcha y diagnóstico en líneas de alimentos.</p><ul class="tags"><li>Kellogg’s</li><li>Bimbo</li></ul></div>
       </a>
       <a class="area" href="#experiencia" data-anim>
         <div class="area-fig"><span class="no">02</span>
           <svg viewBox="0 0 200 110" aria-hidden="true"><path class="ln" pathLength="1" d="M56 10h88"/><rect class="fl" pathLength="1" x="94" y="10" width="12" height="20"/><path class="ln" pathLength="1" d="M100 30 78 54l20 14"/><circle class="fl" pathLength="1" cx="100" cy="30" r="5"/><circle class="fl" pathLength="1" cx="78" cy="54" r="5"/><path class="ln" pathLength="1" d="M98 68l4 10"/><rect class="fl" pathLength="1" x="40" y="80" width="120" height="9"/><path class="ln" pathLength="1" d="M56 89v14M144 89v14M150 30h18M159 21v18"/></svg>
         </div>
-        <div class="area-body"><h4>Dispositivos médicos</h4><p>Puesta en marcha y diagnóstico de equipos en la industria médica.</p><ul class="tags"><li>Intuitive Surgical</li></ul></div>
+        <div class="area-body"><h4 data-i18n="a2.h">Dispositivos médicos</h4><p data-i18n="a2.p">Puesta en marcha y diagnóstico de equipos en la industria médica.</p><ul class="tags"><li>Intuitive Surgical</li></ul></div>
       </a>
       <a class="area" href="#diseno" data-anim>
         <div class="area-fig"><span class="no">03</span>
           <svg viewBox="0 0 200 110" aria-hidden="true"><path class="ln" pathLength="1" d="M40 98h120"/><rect class="fl" pathLength="1" x="70" y="86" width="30" height="12"/><path class="fl" pathLength="1" d="M78 86l12-44 10 3-12 44z"/><path class="fl" pathLength="1" d="M95 40l50 22-4 9-50-22z"/><circle class="fl" pathLength="1" cx="85" cy="86" r="8"/><circle class="fl" pathLength="1" cx="96" cy="42" r="7"/><circle class="fl" pathLength="1" cx="144" cy="66" r="5"/><path class="ln" pathLength="1" d="M144 71v10M138 81h12M139 81v8M149 81v8"/><rect class="fl" pathLength="1" x="150" y="84" width="14" height="14"/></svg>
         </div>
-        <div class="area-body"><h4>Robótica industrial</h4><p>Robots FANUC y KUKA, ROS 2 y celdas de manufactura.</p><ul class="tags"><li>FANUC</li><li>KUKA</li></ul></div>
+        <div class="area-body"><h4 data-i18n="a3.h">Robótica industrial</h4><p data-i18n="a3.p">Robots FANUC y KUKA, ROS 2 y celdas de manufactura.</p><ul class="tags"><li>FANUC</li><li>KUKA</li></ul></div>
       </a>
       <a class="area" href="#startups" data-anim>
         <div class="area-fig"><span class="no">04</span>
           <svg viewBox="0 0 200 110" aria-hidden="true"><rect class="fl" pathLength="1" x="62" y="40" width="56" height="40" rx="4"/><rect class="fl" pathLength="1" x="74" y="20" width="32" height="20" rx="3"/><circle class="ln" pathLength="1" cx="84" cy="30" r="3"/><circle class="ln" pathLength="1" cx="96" cy="30" r="3"/><circle class="fl" pathLength="1" cx="72" cy="86" r="8"/><circle class="fl" pathLength="1" cx="108" cy="86" r="8"/><path class="ln" pathLength="1" d="M90 20v-8M86 12h8M30 96h140"/><circle class="ln" pathLength="1" cx="150" cy="44" r="12"/><circle class="ln" pathLength="1" cx="150" cy="44" r="4"/></svg>
         </div>
-        <div class="area-body"><h4>Educación STEM</h4><p>Talleres gratuitos y una plataforma con IA para niños y jóvenes.</p><ul class="tags"><li>Qubiko</li><li>CultivaTec</li></ul></div>
+        <div class="area-body"><h4 data-i18n="a4.h">Educación STEM</h4><p data-i18n="a4.p">Talleres gratuitos y una plataforma con IA para niños y jóvenes.</p><ul class="tags"><li>Qubiko</li><li>CultivaTec</li></ul></div>
       </a>
       <a class="area" href="#logros" data-anim>
         <div class="area-fig"><span class="no">05</span>
           <svg viewBox="0 0 200 110" aria-hidden="true"><path class="fl" pathLength="1" d="M60 16c14 20 22 32 22 44a22 22 0 0 1-44 0c0-12 8-24 22-44z"/><rect class="fl" pathLength="1" x="104" y="32" width="10" height="56"/><rect class="fl" pathLength="1" x="118" y="36" width="16" height="48"/><rect class="fl" pathLength="1" x="138" y="36" width="16" height="48"/><rect class="fl" pathLength="1" x="158" y="32" width="10" height="56"/><path class="ln" pathLength="1" d="M92 48h12M168 48h14M92 72h12M168 72h14"/></svg>
         </div>
-        <div class="area-body"><h4>Agua y sustentabilidad</h4><p>Desalinización con hidrogel, con patente en trámite.</p><ul class="tags"><li>HER-DS1</li><li>QWOS</li></ul></div>
+        <div class="area-body"><h4 data-i18n="a5.h">Agua y sustentabilidad</h4><p data-i18n="a5.p">Desalinización con hidrogel, con patente en trámite.</p><ul class="tags"><li>HER-DS1</li><li>QWOS</li></ul></div>
       </a>
       <a class="area" href="#ingenieria" data-anim>
         <div class="area-fig"><span class="no">06</span>
           <svg viewBox="0 0 200 110" aria-hidden="true"><path class="ln" pathLength="1" d="M20 96h160"/><rect class="fl" pathLength="1" x="82" y="76" width="36" height="14" rx="2"/><circle class="fl" pathLength="1" cx="90" cy="92" r="5"/><circle class="fl" pathLength="1" cx="110" cy="92" r="5"/><path class="ln" pathLength="1" d="M100 76 118 26"/><circle class="fl" pathLength="1" cx="118" cy="26" r="6"/><path class="ln" pathLength="1" d="M26 62l12-8 10 4 12-14 12 4"/></svg>
         </div>
-        <div class="area-body"><h4>AI Physics</h4><p>Robots que aprenden en simulación física antes del mundo real.</p><ul class="tags"><li>Physical AI</li><li>Sim-to-real</li></ul></div>
+        <div class="area-body"><h4>AI Physics</h4><p data-i18n="a6.p">Robots que aprenden en simulación física antes del mundo real.</p><ul class="tags"><li>Physical AI</li><li>Sim-to-real</li></ul></div>
       </a>
       <a class="area" href="#ingenieria" data-anim>
         <div class="area-fig"><span class="no">07</span>
           <svg viewBox="0 0 200 110" aria-hidden="true"><circle class="ln" pathLength="1" cx="100" cy="56" r="42"/><ellipse class="ln" pathLength="1" cx="100" cy="56" rx="42" ry="12"/><path class="ln" pathLength="1" d="M100 56l24-28"/><circle class="fl" pathLength="1" cx="124" cy="28" r="4"/><text class="tx" x="106" y="12">|0⟩</text><text class="tx" x="106" y="108">|1⟩</text></svg>
         </div>
-        <div class="area-body"><h4>Computación cuántica</h4><p>QAOA y VQE para control, rutas y materiales.</p><ul class="tags"><li>Qiskit</li><li>IBM Quantum</li></ul></div>
+        <div class="area-body"><h4 data-i18n="a7.h">Computación cuántica</h4><p data-i18n="a7.p">QAOA y VQE para control, rutas y materiales.</p><ul class="tags"><li>Qiskit</li><li>IBM Quantum</li></ul></div>
       </a>
       <a class="area" href="#startups" data-anim>
         <div class="area-fig"><span class="no">08</span>
           <svg viewBox="0 0 200 110" aria-hidden="true"><rect class="fl" pathLength="1" x="56" y="46" width="70" height="20" rx="2"/><path class="ln" pathLength="1" d="M70 66 56 82M96 66v16M112 66l16 16M112 46V28"/><rect class="fl" pathLength="1" x="104" y="18" width="18" height="10"/><circle class="fl" pathLength="1" cx="56" cy="86" r="9"/><circle class="fl" pathLength="1" cx="96" cy="86" r="9"/><circle class="fl" pathLength="1" cx="128" cy="86" r="9"/><circle class="ln" pathLength="1" cx="164" cy="84" r="11"/><path class="ln" pathLength="1" d="M20 96h160"/></svg>
         </div>
-        <div class="area-body"><h4>Robótica de competencia</h4><p>CRAI, Baja Robotics League, URC y 10 hackatones.</p><ul class="tags"><li>CRAI</li><li>BRL</li></ul></div>
+        <div class="area-body"><h4 data-i18n="a8.h">Robótica de competencia</h4><p data-i18n="a8.p">CRAI, Baja Robotics League, URC y 10 hackatones.</p><ul class="tags"><li>CRAI</li><li>BRL</li></ul></div>
       </a>
     </div>
   </div>
 </section>
 
 <!-- 03 · STARTUPS -->
-<section class="section page" id="startups" data-page="03" data-title="Startups">
+<section class="section page" id="startups" data-page="03">
   <div class="wrap">
     <div class="sec-head" data-anim="head">
-      <p class="crumbs">Hoja 03 <span>&gt;</span> <b>Startups y comunidad</b></p>
-      <h2 class="h2">Startups en operación</h2>
-      <p class="mono-p">Una startup EdTech con hardware propio y una comunidad para founders y makers de Mexicali.</p>
+      <p class="crumbs" data-i18n="st.crumbs">Hoja 03 <span>&gt;</span> <b>Startups y comunidad</b></p>
+      <h2 class="h2" data-i18n="st.h">Startups en operación</h2>
+      <p class="mono-p" data-i18n="st.p">Una startup EdTech con hardware propio y una comunidad para founders y makers de Mexicali.</p>
     </div>
     <div class="duo">
       <article class="plate" data-anim>
+        <figure class="shot">
+          <div class="shot-bar"><i></i><i></i><i></i><span>qubiko.com.mx</span></div>
+          <img src="assets/img/qubiko.webp" width="1200" height="750" loading="lazy" decoding="async" alt="Página de inicio de Qubiko: crea cualquier cosa de STEM, desde donde estés" data-i18n-attr="alt:q.alt">
+        </figure>
         <div class="plate-top">
-          <p class="crumbs">EdTech <span>&gt;</span> <b>IA + hardware</b></p>
+          <p class="crumbs" data-i18n="q.crumbs">EdTech <span>&gt;</span> <b>IA + hardware</b></p>
           <h3 class="h3">Qubiko</h3>
-          <p class="role"><b>Fundador y CEO</b> · 2026 – hoy</p>
-          <p class="mono-p">Plataforma con IA para crear cualquier proyecto STEM, con hardware propio: el controlador Qubiko Core y el kit DowelBot. Cofundada con Daniel Jared Curiel Avalos y América Michelle Rodríguez Solís.</p>
+          <p class="role" data-i18n="q.role"><b>Fundador y CEO</b> · 2026 – hoy</p>
+          <p class="mono-p" data-i18n="q.desc">Plataforma con IA para crear cualquier proyecto STEM, con hardware propio: el controlador Qubiko Core y el kit DowelBot. Cofundada con Daniel Jared Curiel Avalos y América Michelle Rodríguez Solís.</p>
         </div>
         <div class="bp">
           <div class="bp-frame one">
             <ol class="bp-rows">
-              <li><span>01</span><em>Idea en texto, voz o foto</em></li>
-              <li><span>02</span><em>Diseño 3D, código y diagrama eléctrico</em></li>
-              <li><span>03</span><em>Ruta de pasos para construir</em></li>
+              <li><span>01</span><em data-i18n="q.r1">Idea en texto, voz o foto</em></li>
+              <li><span>02</span><em data-i18n="q.r2">Diseño 3D, código y diagrama eléctrico</em></li>
+              <li><span>03</span><em data-i18n="q.r3">Ruta de pasos para construir</em></li>
             </ol>
-            <p class="bp-statement">1.<sup>er</sup> lugar nacional Bécalos × POSiBLE 2026</p>
+            <p class="bp-statement" data-i18n="q.st">1.<sup>er</sup> lugar nacional Bécalos × POSiBLE 2026</p>
             <div class="bp-tb"><a href="https://qubiko.com.mx" target="_blank" rel="noopener">qubiko.com.mx ↗</a><span>NVIDIA Inception</span></div>
           </div>
         </div>
       </article>
       <article class="plate" data-anim>
+        <figure class="shot">
+          <div class="shot-bar"><i></i><i></i><i></i><span>clubcrai.com</span></div>
+          <img src="assets/img/crai.webp" width="1200" height="750" loading="lazy" decoding="async" alt="Página de inicio de CRAI Club: para quienes diseñan lo que viene" data-i18n-attr="alt:c.alt">
+        </figure>
         <div class="plate-top">
-          <p class="crumbs">Comunidad <span>&gt;</span> <b>Mexicali · 686</b></p>
+          <p class="crumbs" data-i18n="c.crumbs">Comunidad <span>&gt;</span> <b>Mexicali · 686</b></p>
           <h3 class="h3">CRAI Club</h3>
-          <p class="role"><b>Fundador y capitán</b> · Firebase · Vercel</p>
-          <p class="mono-p">Nació como club de robótica avanzada para competencias. Hoy también es el club de founders, makers y creadores de Mexicali, con perfiles, Collab Match y credencial en Apple Wallet.</p>
+          <p class="role" data-i18n="c.role"><b>Fundador y capitán</b> · Firebase · Vercel</p>
+          <p class="mono-p" data-i18n="c.desc">Nació como club de robótica avanzada para competencias. Hoy también es el club de founders, makers y creadores de Mexicali, con perfiles, Collab Match y credencial en Apple Wallet.</p>
         </div>
         <div class="bp">
           <div class="bp-frame one">
             <ol class="bp-rows">
-              <li><span>01</span><em>People y Collab Match</em></li>
-              <li><span>02</span><em>Projects, Events y Quests</em></li>
-              <li><span>03</span><em>Build Night: jueves de 19:00 a 22:00</em></li>
+              <li><span>01</span><em data-i18n="c.r1">People y Collab Match</em></li>
+              <li><span>02</span><em data-i18n="c.r2">Projects, Events y Quests</em></li>
+              <li><span>03</span><em data-i18n="c.r3">Build Night: jueves de 19:00 a 22:00</em></li>
             </ol>
-            <p class="bp-statement">Para quienes construyen lo que viene</p>
-            <div class="bp-tb"><a href="https://www.clubcrai.com" target="_blank" rel="noopener">clubcrai.com ↗</a><a href="https://github.com/deimosvn/CRAI" target="_blank" rel="noopener">Código ↗</a></div>
+            <p class="bp-statement" data-i18n="c.st">Para quienes construyen lo que viene</p>
+            <div class="bp-tb"><a href="https://www.clubcrai.com" target="_blank" rel="noopener">clubcrai.com ↗</a><a href="https://github.com/deimosvn/CRAI" target="_blank" rel="noopener" data-i18n="ui.code">Código ↗</a></div>
           </div>
         </div>
       </article>
@@ -239,224 +260,284 @@
 </section>
 
 <!-- 04 · INGENIERÍA -->
-<section class="section page" id="ingenieria" data-page="04" data-title="Ingeniería">
+<section class="section page" id="ingenieria" data-page="04">
   <div class="wrap">
     <div class="sec-head" data-anim="head">
-      <p class="crumbs">Hoja 04 <span>&gt;</span> <b>AI Physics, ROS 2 y computación cuántica</b></p>
-      <h2 class="h2">Láminas de ingeniería</h2>
-      <p class="mono-p">Seis proyectos de GitHub. La primera lámina corre en vivo.</p>
+      <p class="crumbs" data-i18n="ing.crumbs">Hoja 04 <span>&gt;</span> <b>AI Physics, ROS 2 y computación cuántica</b></p>
+      <h2 class="h2" data-i18n="ing.h">Láminas de ingeniería</h2>
+      <p class="mono-p" data-i18n="ing.p">Seis proyectos de GitHub. La primera lámina corre en vivo.</p>
     </div>
 
     <div class="stack" data-stack>
       <article class="sheet lam" style="--i:0">
-        <header class="lam-bar"><span class="no">Lám. 01/06</span><span>AI Physics · Aprendizaje en simulación</span><a href="https://github.com/deimosvn/newton" target="_blank" rel="noopener" title="deimosvn/newton">Newton ↗</a></header>
+        <header class="lam-bar"><span class="no"><span data-i18n="ui.lam">Lám.</span> 01/06</span><span data-i18n="l1.cat">AI Physics · Aprendizaje en simulación</span><a href="https://github.com/deimosvn/newton" target="_blank" rel="noopener" title="deimosvn/newton">Newton ↗</a></header>
         <div class="lam-body">
           <div class="lam-copy">
-            <h3 class="h3">Robot autobalanceado que aprende</h3>
-            <p class="mono-p">Física de un péndulo invertido sobre ruedas, simulada en vivo. Cada generación prueba 32 controladores y conserva los mejores; en segundos aprende a mantenerse de pie.</p>
+            <h3 class="h3" data-i18n="l1.h">Robot autobalanceado que aprende</h3>
+            <p class="mono-p" data-i18n="l1.p">Física de un péndulo invertido sobre ruedas, simulada en vivo. Cada generación prueba 32 controladores y conserva los mejores; en segundos aprende a mantenerse de pie.</p>
             <div class="sim-ctl">
-              <button class="btn sm" type="button" id="simPush">Empujar robot</button>
-              <button class="btn ghost sm" type="button" id="simReset">Reiniciar</button>
+              <button class="btn sm" type="button" id="simPush" data-i18n="l1.push">Empujar robot</button>
+              <button class="btn ghost sm" type="button" id="simReset" data-i18n="l1.reset">Reiniciar</button>
               <button class="btn ghost sm" type="button" id="simPause" aria-pressed="false">Pausar</button>
             </div>
-            <ul class="tags"><li>Simulación física</li><li>Aprendizaje por refuerzo</li><li>CEM</li><li>Sim-to-real</li></ul>
+            <ul class="tags"><li data-i18n="tag.sim">Simulación física</li><li data-i18n="tag.rl">Aprendizaje por refuerzo</li><li>CEM</li><li>Sim-to-real</li></ul>
           </div>
           <div class="lam-fig">
-            <div class="fig-cap"><span>Fig. 01 · Simulación en vivo</span><b id="simStatus">Aprendiendo</b></div>
-            <div class="sim"><canvas id="simCanvas" role="img" aria-label="Simulación de un robot de dos ruedas que aprende a equilibrarse; incluye una gráfica de la recompensa por generación"></canvas></div>
+            <div class="fig-cap"><span data-i18n="l1.fig">Fig. 01 · Simulación en vivo</span><b id="simStatus">Aprendiendo</b></div>
+            <div class="sim"><canvas id="simCanvas" role="img" aria-label="Simulación de un robot de dos ruedas que aprende a equilibrarse" data-i18n-attr="aria-label:l1.canvas"></canvas></div>
             <div class="sim-stats">
-              <div>Generación<b id="simGen">00</b></div>
-              <div>Recompensa<b id="simRew">0 %</b></div>
-              <div>Exploración σ<b id="simSig">—</b></div>
-              <div class="wide">Ganancias K = [x, ẋ, θ, θ̇]<b id="simK">—</b></div>
+              <div><span data-i18n="sim.gen">Generación</span><b id="simGen">00</b></div>
+              <div><span data-i18n="sim.rew">Recompensa</span><b id="simRew">0 %</b></div>
+              <div><span data-i18n="sim.sig">Exploración σ</span><b id="simSig">—</b></div>
+              <div class="wide"><span data-i18n="sim.k">Ganancias K = [x, ẋ, θ, θ̇]</span><b id="simK">—</b></div>
             </div>
           </div>
         </div>
       </article>
 
       <article class="sheet lam" style="--i:1">
-        <header class="lam-bar"><span class="no">Lám. 02/06</span><span>ROS 2 · Control híbrido</span><a href="https://github.com/deimosvn/Hybrid-Quantum-Actuator-Control" target="_blank" rel="noopener" title="deimosvn/Hybrid-Quantum-Actuator-Control">GitHub ↗</a></header>
+        <header class="lam-bar"><span class="no"><span data-i18n="ui.lam">Lám.</span> 02/06</span><span data-i18n="l2.cat">ROS 2 · Control híbrido</span><a href="https://github.com/deimosvn/Hybrid-Quantum-Actuator-Control" target="_blank" rel="noopener" title="deimosvn/Hybrid-Quantum-Actuator-Control">GitHub ↗</a></header>
         <div class="lam-body">
           <div class="lam-copy">
             <h3 class="h3">Hybrid Quantum-Classical Actuator Control</h3>
-            <p class="mono-p">Stack ROS 2 para un rover autónomo: cierra el lazo de velocidad con QAOA y pasa a un PID cuando el backend cuántico no está disponible.</p>
+            <p class="mono-p" data-i18n="l2.p">Stack ROS 2 para un rover autónomo: cierra el lazo de velocidad con QAOA y pasa a un PID cuando el backend cuántico no está disponible.</p>
             <span class="chip-metric">QAOA ⇄ PID · RMSE, IAE, ISE</span>
             <ul class="tags"><li>ROS 2 Humble / Jazzy</li><li>Qiskit Aer</li><li>URDF + RViz</li><li>Docker</li></ul>
           </div>
           <div class="lam-fig">
-            <div class="fig-cap"><span>Fig. 02 · Diagrama de bloques</span><span>Lazo cerrado</span></div>
-            <ol class="flow"><li>Perfil de velocidad</li><li class="core">Controlador QAOA ⇄ PID</li><li>Motor DC</li><li>Odometría y TF</li></ol>
-            <ol class="bp-rows">
-              <li><span>01</span><em>Nodo lifecycle: configure → activate</em></li>
-              <li><span>02</span><em>Acción FollowVelocityProfile con feedback</em></li>
-            </ol>
+            <div class="fig-cap"><span data-i18n="l2.fig">Fig. 02 · Diagrama de bloques</span><span data-i18n="l2.fig2">Lazo cerrado</span></div>
+            <ol class="flow"><li data-i18n="l2.f1">Perfil de velocidad</li><li class="core" data-i18n="l2.f2">Controlador QAOA ⇄ PID</li><li data-i18n="l2.f3">Motor DC</li><li data-i18n="l2.f4">Odometría y TF</li></ol>
+            <figure class="sv-wrap">
+              <svg class="sv" viewBox="0 0 400 140" aria-hidden="true">
+                <path class="gl" d="M40 36H392M40 68H392M40 100H392"/>
+                <path class="ax" d="M40 10V124H394"/>
+                <path class="ref" d="M40 124H80V36H394"/>
+                <path class="c2 draw" pathLength="1" d="M80 124C104 124 108 14 134 22S166 50 190 42S230 32 258 37S330 36 394 36"/>
+                <path class="c1 draw d2" pathLength="1" d="M80 124C108 124 112 42 146 37S230 36 394 36"/>
+                <text class="t" x="44" y="20">v</text><text class="t" x="380" y="138">t</text>
+                <text class="t" x="196" y="30">PID</text><text class="t hl" x="300" y="56">QAOA</text>
+              </svg>
+              <figcaption data-i18n="l2.cap">Respuesta al escalón: referencia, PID y QAOA</figcaption>
+            </figure>
           </div>
         </div>
       </article>
 
       <article class="sheet lam" style="--i:2">
-        <header class="lam-bar"><span class="no">Lám. 03/06</span><span>micro-ROS · Embebidos</span><a href="https://github.com/deimosvn/KinetiQ-Quantum-Rover" target="_blank" rel="noopener" title="deimosvn/KinetiQ-Quantum-Rover">GitHub ↗</a></header>
+        <header class="lam-bar"><span class="no"><span data-i18n="ui.lam">Lám.</span> 03/06</span><span data-i18n="l3.cat">micro-ROS · Embebidos</span><a href="https://github.com/deimosvn/KinetiQ-Quantum-Rover" target="_blank" rel="noopener" title="deimosvn/KinetiQ-Quantum-Rover">GitHub ↗</a></header>
         <div class="lam-body">
           <div class="lam-copy">
             <h3 class="h3">KinetiQ Quantum Rover</h3>
-            <p class="mono-p">Firmware C++ para ESP32 que planifica rutas de un rover con un algoritmo evolutivo de inspiración cuántica, sobre FreeRTOS y micro-ROS, sin depender de la nube.</p>
-            <span class="chip-metric">45 KB de RAM</span>
+            <p class="mono-p" data-i18n="l3.p">Firmware C++ para ESP32 que planifica rutas de un rover con un algoritmo evolutivo de inspiración cuántica, sobre FreeRTOS y micro-ROS, sin depender de la nube.</p>
+            <span class="chip-metric" data-i18n="l3.chip">45 KB de RAM</span>
             <ul class="tags"><li>C++</li><li>ESP-IDF</li><li>FreeRTOS</li><li>micro-ROS</li></ul>
           </div>
           <div class="lam-fig">
-            <div class="fig-cap"><span>Fig. 03 · Arquitectura en el borde</span><span>ESP32</span></div>
-            <ol class="flow"><li>Sensores y mapa</li><li>Modelo QUBO</li><li class="core">QIEA en ESP32</li><li>Ruta por micro-ROS</li></ol>
-            <ol class="bp-rows">
-              <li><span>01</span><em>Optimización NP-hard en el microcontrolador</em></li>
-              <li><span>02</span><em>Firmware para un artículo de investigación</em></li>
-            </ol>
+            <div class="fig-cap"><span data-i18n="l3.fig">Fig. 03 · Arquitectura en el borde</span><span>ESP32</span></div>
+            <ol class="flow"><li data-i18n="l3.f1">Sensores y mapa</li><li data-i18n="l3.f2">Modelo QUBO</li><li class="core" data-i18n="l3.f3">QIEA en ESP32</li><li data-i18n="l3.f4">Ruta por micro-ROS</li></ol>
+            <figure class="sv-wrap">
+              <svg class="sv" viewBox="0 0 400 140" aria-hidden="true">
+                <path class="gl" d="M20 10V130M60 10V130M100 10V130M140 10V130M180 10V130M220 10V130M260 10V130M300 10V130M340 10V130M380 10V130M20 10H380M20 50H380M20 90H380M20 130H380"/>
+                <rect class="ob" x="100" y="90" width="40" height="40"/><rect class="ob" x="180" y="50" width="40" height="80"/><rect class="ob" x="260" y="10" width="40" height="40"/><rect class="ob" x="300" y="90" width="40" height="40"/>
+                <path id="kqPath" class="pth" d="M40 110H80V70H160V30H240V70H340V30H370"/>
+                <circle class="pt" cx="40" cy="110" r="5"/><path class="pt-g" d="M364 24l12 12M376 24l-12 12"/>
+                <g><rect class="rv" x="-7" y="-5" width="14" height="10"/><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#kqPath"/></animateMotion></g>
+              </svg>
+              <figcaption data-i18n="l3.cap">Ruta planificada en el microcontrolador evitando obstáculos</figcaption>
+            </figure>
           </div>
         </div>
       </article>
 
       <article class="sheet lam" style="--i:3">
-        <header class="lam-bar"><span class="no">Lám. 04/06</span><span>Cuántica · Enjambres</span><a href="https://github.com/deimosvn/Quantum-Swarm-Path-Planner-QSPP-" target="_blank" rel="noopener" title="deimosvn/Quantum-Swarm-Path-Planner">GitHub ↗</a></header>
+        <header class="lam-bar"><span class="no"><span data-i18n="ui.lam">Lám.</span> 04/06</span><span data-i18n="l4.cat">Cuántica · Enjambres</span><a href="https://github.com/deimosvn/Quantum-Swarm-Path-Planner-QSPP-" target="_blank" rel="noopener" title="deimosvn/Quantum-Swarm-Path-Planner">GitHub ↗</a></header>
         <div class="lam-body">
           <div class="lam-copy">
             <h3 class="h3">Quantum Swarm Path Planner</h3>
-            <p class="mono-p">Planificación de rutas para enjambres de robots que combina QAOA con A* para evitar obstáculos y colisiones con menos energía.</p>
-            <span class="chip-metric">50 a 200 robots</span>
+            <p class="mono-p" data-i18n="l4.p">Planificación de rutas para enjambres de robots que combina QAOA con A* para evitar obstáculos y colisiones con menos energía.</p>
+            <span class="chip-metric" data-i18n="l4.chip">50 a 200 robots</span>
             <ul class="tags"><li>Python</li><li>Qiskit</li><li>QAOA</li><li>A*</li></ul>
           </div>
           <div class="lam-fig">
-            <div class="fig-cap"><span>Fig. 04 · Flujo híbrido</span><span>QAOA + A*</span></div>
-            <ol class="flow"><li>Mapa y metas</li><li class="core">QAOA · 8 qubits por robot</li><li>Respaldo A*</li><li>Rutas sin colisión</li></ol>
-            <ol class="bp-rows">
-              <li><span>01</span><em>Prevención de colisiones entre robots</em></li>
-              <li><span>02</span><em>Minimización de energía por ruta</em></li>
-            </ol>
+            <div class="fig-cap"><span data-i18n="l4.fig">Fig. 04 · Flujo híbrido</span><span>QAOA + A*</span></div>
+            <ol class="flow"><li data-i18n="l4.f1">Mapa y metas</li><li class="core" data-i18n="l4.f2">QAOA · 8 qubits por robot</li><li data-i18n="l4.f3">Respaldo A*</li><li data-i18n="l4.f4">Rutas sin colisión</li></ol>
+            <figure class="sv-wrap">
+              <svg class="sv" viewBox="0 0 400 140" aria-hidden="true">
+                <circle class="ob" cx="150" cy="70" r="26"/><circle class="ob" cx="270" cy="44" r="18"/><circle class="ob" cx="260" cy="108" r="16"/>
+                <path id="sw1" class="pth thin" d="M20 20C90 20 110 30 150 34S240 18 300 24S370 30 384 30"/>
+                <path id="sw2" class="pth thin" d="M20 60C80 64 100 110 150 108S220 74 300 76S370 70 384 70"/>
+                <path id="sw3" class="pth thin" d="M20 100C70 100 110 128 170 126S230 88 300 92S370 108 384 110"/>
+                <path id="sw4" class="pth thin" d="M20 130C80 134 120 30 200 26S320 60 384 50"/>
+                <circle class="bot" r="5"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#sw1"/></animateMotion></circle>
+                <circle class="bot" r="5"><animateMotion dur="7s" begin="-2s" repeatCount="indefinite"><mpath href="#sw2"/></animateMotion></circle>
+                <circle class="bot" r="5"><animateMotion dur="6.5s" begin="-4s" repeatCount="indefinite"><mpath href="#sw3"/></animateMotion></circle>
+                <circle class="bot" r="5"><animateMotion dur="8s" begin="-1s" repeatCount="indefinite"><mpath href="#sw4"/></animateMotion></circle>
+              </svg>
+              <figcaption data-i18n="l4.cap">Cuatro robots del enjambre comparten el espacio sin chocar</figcaption>
+            </figure>
           </div>
         </div>
       </article>
 
       <article class="sheet lam" style="--i:4">
-        <header class="lam-bar"><span class="no">Lám. 05/06</span><span>Cuántica · Agua</span><a href="https://github.com/deimosvn/Quantum-Water-Optimization-System-QWOS-Optimizaci-n-Cu-ntica-del-Sistema-de-Desalinizaci-n-HER-DS1" target="_blank" rel="noopener" title="deimosvn/QWOS">GitHub ↗</a></header>
+        <header class="lam-bar"><span class="no"><span data-i18n="ui.lam">Lám.</span> 05/06</span><span data-i18n="l5.cat">Cuántica · Agua</span><a href="https://github.com/deimosvn/Quantum-Water-Optimization-System-QWOS-Optimizaci-n-Cu-ntica-del-Sistema-de-Desalinizaci-n-HER-DS1" target="_blank" rel="noopener" title="deimosvn/QWOS">GitHub ↗</a></header>
         <div class="lam-body">
           <div class="lam-copy">
-            <h3 class="h3">QWOS y QuantumHydroCore</h3>
-            <p class="mono-p">QWOS optimiza en tiempo real la operación de HER-DS1, el sistema de desalinización por hidrogel con patente en trámite. QuantumHydroCore usa VQE para diseñar filtros moleculares.</p>
-            <span class="chip-metric">Objetivo: −45 % de energía por m³</span>
-            <ul class="tags"><li>Qiskit</li><li>QAOA</li><li>VQE</li><li>Control predictivo</li></ul>
+            <h3 class="h3" data-i18n="l5.h">QWOS y QuantumHydroCore</h3>
+            <p class="mono-p" data-i18n="l5.p">QWOS optimiza en tiempo real la operación de HER-DS1, el sistema de desalinización por hidrogel con patente en trámite. QuantumHydroCore usa VQE para diseñar filtros moleculares.</p>
+            <span class="chip-metric" data-i18n="l5.chip">Objetivo: −45 % de energía por m³</span>
+            <ul class="tags"><li>Qiskit</li><li>QAOA</li><li>VQE</li><li data-i18n="tag.mpc">Control predictivo</li></ul>
           </div>
           <div class="lam-fig">
-            <div class="fig-cap"><span>Fig. 05 · Pipeline cuántico-clásico</span><span>HER-DS1</span></div>
-            <ol class="flow"><li>Calibración VQE</li><li class="core">Optimización QAOA</li><li>Control QMPC</li><li>Planta HER-DS1</li></ol>
-            <ol class="bp-rows">
-              <li><span>01</span><em>Voltaje, flujo, temperatura y ciclo</em></li>
-              <li><span>02</span><em>Comparativa contra 5 optimizadores clásicos</em></li>
-            </ol>
+            <div class="fig-cap"><span data-i18n="l5.fig">Fig. 05 · Pipeline cuántico-clásico</span><span>HER-DS1</span></div>
+            <ol class="flow"><li data-i18n="l5.f1">Calibración VQE</li><li class="core" data-i18n="l5.f2">Optimización QAOA</li><li data-i18n="l5.f3">Control QMPC</li><li data-i18n="l5.f4">Planta HER-DS1</li></ol>
+            <figure class="sv-wrap">
+              <svg class="sv" viewBox="0 0 400 140" aria-hidden="true">
+                <path class="ax" d="M54 26H384M54 58H384M54 90H384M54 122H384"/>
+                <text class="t" x="16" y="30">q0</text><text class="t" x="16" y="62">q1</text><text class="t" x="16" y="94">q2</text><text class="t" x="16" y="126">q3</text>
+                <g class="gate"><rect x="66" y="16" width="22" height="20"/><rect x="66" y="48" width="22" height="20"/><rect x="66" y="80" width="22" height="20"/><rect x="66" y="112" width="22" height="20"/></g>
+                <text class="t gt" x="72" y="30">H</text><text class="t gt" x="72" y="62">H</text><text class="t gt" x="72" y="94">H</text><text class="t gt" x="72" y="126">H</text>
+                <path class="ax" d="M120 26V58M160 58V90M200 90V122M240 26V122"/>
+                <circle class="dot" cx="120" cy="26" r="4"/><circle class="dot" cx="120" cy="58" r="4"/><circle class="dot" cx="160" cy="58" r="4"/><circle class="dot" cx="160" cy="90" r="4"/><circle class="dot" cx="200" cy="90" r="4"/><circle class="dot" cx="200" cy="122" r="4"/><circle class="dot" cx="240" cy="26" r="4"/><circle class="dot" cx="240" cy="122" r="4"/>
+                <g class="gate"><rect x="270" y="16" width="30" height="20"/><rect x="270" y="48" width="30" height="20"/><rect x="270" y="80" width="30" height="20"/><rect x="270" y="112" width="30" height="20"/></g>
+                <text class="t gt" x="274" y="30">RX</text><text class="t gt" x="274" y="62">RX</text><text class="t gt" x="274" y="94">RX</text><text class="t gt" x="274" y="126">RX</text>
+                <g class="mbox"><rect x="340" y="16" width="26" height="20"/><rect x="340" y="48" width="26" height="20"/><rect x="340" y="80" width="26" height="20"/><rect x="340" y="112" width="26" height="20"/></g>
+                <path class="ax" d="M345 32a8 8 0 0 1 16 0M353 32l5-9M345 64a8 8 0 0 1 16 0M353 64l5-9M345 96a8 8 0 0 1 16 0M353 96l5-9M345 128a8 8 0 0 1 16 0M353 128l5-9"/>
+                <rect class="scan" x="54" y="8" width="3" height="126"/>
+              </svg>
+              <figcaption data-i18n="l5.cap">Una capa del circuito QAOA: H, acoplamientos ZZ, RX y medición</figcaption>
+            </figure>
           </div>
         </div>
       </article>
 
       <article class="sheet lam" style="--i:5">
-        <header class="lam-bar"><span class="no">Lám. 06/06</span><span>IA + cuántica · Agro</span><a href="https://github.com/deimosvn/QuantumAgroBot" target="_blank" rel="noopener" title="deimosvn/QuantumAgroBot">GitHub ↗</a></header>
+        <header class="lam-bar"><span class="no"><span data-i18n="ui.lam">Lám.</span> 06/06</span><span data-i18n="l6.cat">IA + cuántica · Agro</span><a href="https://github.com/deimosvn/QuantumAgroBot" target="_blank" rel="noopener" title="deimosvn/QuantumAgroBot">GitHub ↗</a></header>
         <div class="lam-body">
           <div class="lam-copy">
             <h3 class="h3">QuantumAgroBot</h3>
-            <p class="mono-p">Detecta enfermedades en cultivos antes de los síntomas visibles con visión multiespectral, IA y optimización QAOA y VQE. Hecho para InnovaTecNM 2026.</p>
+            <p class="mono-p" data-i18n="l6.p">Detecta enfermedades en cultivos antes de los síntomas visibles con visión multiespectral, IA y optimización QAOA y VQE. Hecho para InnovaTecNM 2026.</p>
             <span class="chip-metric">InnovaTecNM 2026</span>
             <ul class="tags"><li>Python</li><li>PyTorch</li><li>Qiskit</li></ul>
           </div>
           <div class="lam-fig">
-            <div class="fig-cap"><span>Fig. 06 · Detección temprana</span><span>Campo</span></div>
-            <ol class="flow"><li>Cámara multiespectral</li><li>Modelo de IA</li><li class="core">Optimización QAOA / VQE</li><li>Alerta temprana</li></ol>
-            <ol class="bp-rows">
-              <li><span>01</span><em>Detección antes de los síntomas visibles</em></li>
-              <li><span>02</span><em>Visión fuera del espectro visible</em></li>
-            </ol>
+            <div class="fig-cap"><span data-i18n="l6.fig">Fig. 06 · Detección temprana</span><span data-i18n="l6.fig2">Campo</span></div>
+            <ol class="flow"><li data-i18n="l6.f1">Cámara multiespectral</li><li data-i18n="l6.f2">Modelo de IA</li><li class="core" data-i18n="l6.f3">Optimización QAOA / VQE</li><li data-i18n="l6.f4">Alerta temprana</li></ol>
+            <figure class="sv-wrap">
+              <svg class="sv" viewBox="0 0 400 140" aria-hidden="true" data-heat="1"><rect class="scan" x="10" y="6" width="3" height="128"/></svg>
+              <figcaption data-i18n="l6.cap">Mapa multiespectral del cultivo: las zonas marcadas muestran estrés antes de verse</figcaption>
+            </figure>
           </div>
         </div>
       </article>
     </div>
 
     <div class="sub-h" data-anim>
-      <h3 class="sub-title">Más proyectos</h3>
+      <h3 class="sub-title" data-i18n="ing.more">Más proyectos</h3>
       <a class="btn ghost sm" href="https://github.com/deimosvn" target="_blank" rel="noopener">GitHub <svg><use href="#i-arrow"/></svg></a>
     </div>
     <div class="minis rail">
-      <article class="mini" data-anim><div class="mini-top"><span class="k">Control</span><h3>Control de procesos PID</h3><p>Sistema de control PID para un proceso, programado en PLC. Proyecto académico con la UPBC.</p></div><div class="mini-tb"><span>PLC · PID</span><span>Académico</span></div></article>
-      <article class="mini" data-anim><div class="mini-top"><span class="k">Automatización · IA</span><h3>PLC AI Studio</h3><p>Código PLC con IA para 16 marcas y 6 lenguajes IEC 61131-3, con auditoría y extracción de I/O desde diagramas.</p></div><div class="mini-tb"><span>Next.js · Gemini</span><a href="https://github.com/deimosvn/plcgenerador" target="_blank" rel="noopener">Código ↗</a></div></article>
-      <article class="mini" data-anim><div class="mini-top"><span class="k">Lenguaje · Rovers</span><h3>Axon-R</h3><p>Lenguaje para programar rovers que detecta errores de unidades físicas al compilar y genera C.</p></div><div class="mini-tb"><span>DSL · URC 2026</span><a href="https://github.com/deimosvn/axon-r" target="_blank" rel="noopener">Código ↗</a></div></article>
-      <article class="mini" data-anim><div class="mini-top"><span class="k">Competencia</span><h3>BRL Control Pro</h3><p>App para controlar robots de fútbol por Bluetooth, WiFi o RF, con firmware para ESP32 y Arduino.</p></div><div class="mini-tb"><a href="https://control-futbol.vercel.app" target="_blank" rel="noopener" style="border-left:0">App ↗</a><a href="https://github.com/deimosvn/control-futbol" target="_blank" rel="noopener">Código ↗</a></div></article>
-      <article class="mini" data-anim><div class="mini-top"><span class="k">EdTech</span><h3>CultivaTec</h3><p>Talleres gratuitos de robótica con módulos electrónicos, tutor con IA y panel docente. Antecedente de Qubiko.</p></div><div class="mini-tb"><span>POSiBLE 2026</span><a href="https://github.com/deimosvn/CULTIVATEC" target="_blank" rel="noopener">Código ↗</a></div></article>
-      <article class="mini" data-anim><div class="mini-top"><span class="k">Visión artificial</span><h3>DJ Auto-Mix</h3><p>Mezcladora de DJ que se controla con la posición de las manos frente a la cámara.</p></div><div class="mini-tb"><span>MediaPipe</span><a href="https://github.com/deimosvn/dj-mixed" target="_blank" rel="noopener">Código ↗</a></div></article>
+      <article class="mini" data-anim>
+        <div class="mini-fig"><svg viewBox="0 0 200 90" aria-hidden="true"><path class="ln" d="M14 45h28M86 45h24M154 45h32M170 45v30H62V59"/><circle class="ln" cx="52" cy="45" r="10"/><path class="ln" d="M47 45h10M52 40v10"/><rect class="fl" x="62" y="32" width="24" height="26"/><rect class="fl" x="110" y="32" width="44" height="26"/><text class="tx" x="68" y="49">PID</text><text class="tx" x="119" y="49">G(s)</text></svg></div>
+        <div class="mini-top"><span class="k" data-i18n="mi1.k">Control</span><h3 data-i18n="mi1.h">Control de procesos PID</h3><p data-i18n="mi1.p">Sistema de control PID para un proceso, programado en PLC. Proyecto académico con la UPBC.</p></div>
+        <div class="mini-tb"><span>PLC · PID</span><span data-i18n="mi1.tb">Académico</span></div>
+      </article>
+      <article class="mini" data-anim>
+        <div class="mini-fig"><svg viewBox="0 0 200 90" aria-hidden="true"><path class="ln" d="M20 10v70M180 10v70M20 30h30M70 30h50M140 30h40M20 60h30M70 60h80M170 60h10"/><path class="ln" d="M50 22v16M58 22v16M120 22v16M128 22v16M50 52v16M58 52v16"/><circle class="ln" cx="155" cy="60" r="9"/><text class="tx" x="130" y="18">LD</text></svg></div>
+        <div class="mini-top"><span class="k" data-i18n="mi2.k">Automatización · IA</span><h3>PLC AI Studio</h3><p data-i18n="mi2.p">Código PLC con IA para 16 marcas y 6 lenguajes IEC 61131-3, con auditoría y extracción de I/O desde diagramas.</p></div>
+        <div class="mini-tb"><span>Next.js · Gemini</span><a href="https://github.com/deimosvn/plcgenerador" target="_blank" rel="noopener" data-i18n="ui.code">Código ↗</a></div>
+      </article>
+      <article class="mini" data-anim>
+        <div class="mini-fig"><svg viewBox="0 0 200 90" aria-hidden="true"><path class="ln" d="M34 20l-14 25 14 25M166 20l14 25-14 25"/><text class="tx" x="46" y="34">speed: 2 m/s</text><text class="tx" x="46" y="52">dist: 30 cm</text><text class="tx" x="46" y="70">→ C</text><path class="ln" d="M120 64h30"/></svg></div>
+        <div class="mini-top"><span class="k" data-i18n="mi3.k">Lenguaje · Rovers</span><h3>Axon-R</h3><p data-i18n="mi3.p">Lenguaje para programar rovers que detecta errores de unidades físicas al compilar y genera C.</p></div>
+        <div class="mini-tb"><span>DSL · URC 2026</span><a href="https://github.com/deimosvn/axon-r" target="_blank" rel="noopener" data-i18n="ui.code">Código ↗</a></div>
+      </article>
+      <article class="mini" data-anim>
+        <div class="mini-fig photo"><img src="assets/img/brl.webp" width="1200" height="750" loading="lazy" decoding="async" alt="Pantalla de BRL Control Pro con joysticks y botones de patear, pasar y paro" data-i18n-attr="alt:mi4.alt"></div>
+        <div class="mini-top"><span class="k" data-i18n="mi4.k">Competencia</span><h3>BRL Control Pro</h3><p data-i18n="mi4.p">App para controlar robots de fútbol por Bluetooth, WiFi o RF, con firmware para ESP32 y Arduino.</p></div>
+        <div class="mini-tb"><a href="https://control-futbol.vercel.app" target="_blank" rel="noopener" style="border-left:0">App ↗</a><a href="https://github.com/deimosvn/control-futbol" target="_blank" rel="noopener" data-i18n="ui.code">Código ↗</a></div>
+      </article>
+      <article class="mini" data-anim>
+        <div class="mini-fig"><svg viewBox="0 0 200 90" aria-hidden="true"><rect class="fl" x="50" y="18" width="100" height="54" rx="4"/><rect class="ln" x="80" y="32" width="40" height="26"/><path class="ln" d="M60 18V8M75 18V8M90 18V8M110 18V8M125 18V8M140 18V8M60 72v10M75 72v10M90 72v10M110 72v10M125 72v10M140 72v10"/><circle class="ln" cx="62" cy="62" r="3"/></svg></div>
+        <div class="mini-top"><span class="k">EdTech</span><h3>CultivaTec</h3><p data-i18n="mi5.p">Talleres gratuitos de robótica con módulos electrónicos, tutor con IA y panel docente. Antecedente de Qubiko.</p></div>
+        <div class="mini-tb"><span>POSiBLE 2026</span><a href="https://github.com/deimosvn/CULTIVATEC" target="_blank" rel="noopener" data-i18n="ui.code">Código ↗</a></div>
+      </article>
+      <article class="mini" data-anim>
+        <div class="mini-fig"><svg viewBox="0 0 200 90" aria-hidden="true"><path class="ln wave" d="M10 45c10-30 20 30 30 0s20 30 30 0 20-30 30 0 20 30 30 0 20-30 30 0 20 30 30 0"/><path class="ln" d="M40 78V58l6-10 6 10v20M150 78V54l6-10 6 10v24"/></svg></div>
+        <div class="mini-top"><span class="k" data-i18n="mi6.k">Visión artificial</span><h3>DJ Auto-Mix</h3><p data-i18n="mi6.p">Mezcladora de DJ que se controla con la posición de las manos frente a la cámara.</p></div>
+        <div class="mini-tb"><span>MediaPipe</span><a href="https://github.com/deimosvn/dj-mixed" target="_blank" rel="noopener" data-i18n="ui.code">Código ↗</a></div>
+      </article>
     </div>
   </div>
 </section>
 
 <!-- 05 · DISEÑO CAD -->
-<section class="section page design" id="diseno" data-page="05" data-title="Diseños CAD">
+<section class="section page design" id="diseno" data-page="05">
   <div class="wrap">
     <div class="sec-head" data-anim="head">
-      <p class="crumbs">Hoja 05 <span>&gt;</span> <b>Diseño mecánico CAD</b></p>
-      <h2 class="h2">Diseños CAD</h2>
-      <p class="mono-p">Al hacer scroll cada ensamble se separa en sus piezas. Ábrelo en el visor para girarlo, medirlo y ver su lista de materiales.</p>
+      <p class="crumbs" data-i18n="cad.crumbs">Hoja 05 <span>&gt;</span> <b>Diseño mecánico CAD</b></p>
+      <h2 class="h2" data-i18n="page.diseno">Diseños CAD</h2>
+      <p class="mono-p" data-i18n="cad.p">Al hacer scroll cada ensamble se separa en sus piezas. Ábrelo en el visor para girarlo, medirlo y ver su lista de materiales.</p>
     </div>
     <div class="stack" data-stack>
       <article class="sheet plate cadcard" style="--i:0" id="cad-cell">
         <div class="cad-head">
-          <div><p class="crumbs">Manufactura flexible <span>&gt;</span> <b>Proyecto ITM</b></p><h3 class="h3">Celda robótica de manufactura</h3></div>
-          <p class="mono-p">Diseño en SolidWorks y AutoCAD de una celda flexible: robot industrial, centro de maquinado CNC, banda, mesa de fixtures y guardas de seguridad.</p>
+          <div><p class="crumbs" data-i18n="d1.crumbs">Manufactura flexible <span>&gt;</span> <b>Proyecto ITM</b></p><h3 class="h3" data-i18n="d1.h">Celda robótica de manufactura</h3></div>
+          <p class="mono-p" data-i18n="d1.p">Diseño en SolidWorks y AutoCAD de una celda flexible: robot industrial, centro de maquinado CNC, banda, mesa de fixtures y guardas de seguridad.</p>
         </div>
         <div class="bp"><div class="bp-frame">
-          <div class="bp-fig"><canvas class="draw" data-model="cell" role="img" aria-label="Representación isométrica de una celda robótica de manufactura"></canvas><p class="fig-label">Fig. D-01 · Representación isométrica</p><p class="fig-read">Explosión <b>0 %</b><span class="xbar"><i></i></span></p></div>
-          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em>Robot de 6 ejes sobre pedestal</em></li><li><span>02</span><em>CNC, banda y mesa de fixtures</em></li><li><span>03</span><em>Guarda perimetral y cortinas de luz</em></li></ol><div class="bp-fill" data-bom="cell"></div><button class="bp-open" type="button" data-cad="cell"><svg><use href="#i-cube"/></svg>Abrir visor CAD</button></div>
+          <div class="bp-fig"><canvas class="draw" data-model="cell" role="img" aria-label="Celda robótica de manufactura en vista isométrica" data-i18n-attr="aria-label:d1.h"></canvas><p class="fig-label" data-i18n="d1.fig">Fig. D-01 · Representación isométrica</p><p class="fig-read"><span data-i18n="ui.explode">Explosión</span> <b>0 %</b><span class="xbar"><i></i></span></p></div>
+          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em data-i18n="d1.r1">Robot de 6 ejes sobre pedestal</em></li><li><span>02</span><em data-i18n="d1.r2">CNC, banda y mesa de fixtures</em></li><li><span>03</span><em data-i18n="d1.r3">Guarda perimetral y cortinas de luz</em></li></ol><div class="bp-fill" data-bom="cell"></div><button class="bp-open" type="button" data-cad="cell"><svg><use href="#i-cube"/></svg><span data-i18n="ui.opencad">Abrir visor CAD</span></button></div>
         </div></div>
       </article>
       <article class="sheet plate cadcard" style="--i:1" id="cad-arm">
         <div class="cad-head">
-          <div><p class="crumbs">Robótica industrial <span>&gt;</span> <b>Estudio de diseño</b></p><h3 class="h3">Brazo robótico de 6 ejes</h3></div>
-          <p class="mono-p">Brazo articulado como los FANUC y KUKA que programo: servomotores con reductor, contrapeso en J3, muñeca esférica y pinza. Es el modelo que mueve el robot del inicio.</p>
+          <div><p class="crumbs" data-i18n="d2.crumbs">Robótica industrial <span>&gt;</span> <b>Estudio de diseño</b></p><h3 class="h3" data-i18n="d2.h">Brazo robótico de 6 ejes</h3></div>
+          <p class="mono-p" data-i18n="d2.p">Brazo articulado como los FANUC y KUKA que programo: servomotores con reductor, contrapeso en J3, muñeca esférica y pinza. Es el modelo que mueve el robot del inicio.</p>
         </div>
         <div class="bp"><div class="bp-frame">
-          <div class="bp-fig"><canvas class="draw" data-model="arm" role="img" aria-label="Dibujo isométrico de un brazo robótico de seis ejes"></canvas><p class="fig-label">Fig. D-02 · Vista isométrica</p><p class="fig-read">Explosión <b>0 %</b><span class="xbar"><i></i></span></p></div>
-          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em>Base y torreta J1</em></li><li><span>02</span><em>Brazo, codo y antebrazo</em></li><li><span>03</span><em>Muñeca, brida y pinza</em></li></ol><div class="bp-fill" data-bom="arm"></div><button class="bp-open" type="button" data-cad="arm"><svg><use href="#i-cube"/></svg>Abrir visor CAD</button></div>
+          <div class="bp-fig"><canvas class="draw" data-model="arm" role="img" aria-label="Brazo robótico de 6 ejes en vista isométrica" data-i18n-attr="aria-label:d2.h"></canvas><p class="fig-label" data-i18n="d2.fig">Fig. D-02 · Vista isométrica</p><p class="fig-read"><span data-i18n="ui.explode">Explosión</span> <b>0 %</b><span class="xbar"><i></i></span></p></div>
+          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em data-i18n="d2.r1">Base y torreta J1</em></li><li><span>02</span><em data-i18n="d2.r2">Brazo, codo y antebrazo</em></li><li><span>03</span><em data-i18n="d2.r3">Muñeca, brida y pinza</em></li></ol><div class="bp-fill" data-bom="arm"></div><button class="bp-open" type="button" data-cad="arm"><svg><use href="#i-cube"/></svg><span data-i18n="ui.opencad">Abrir visor CAD</span></button></div>
         </div></div>
       </article>
       <article class="sheet plate cadcard" style="--i:2" id="cad-rover">
         <div class="cad-head">
-          <div><p class="crumbs">Vehículos <span>&gt;</span> <b>Estudio de diseño</b></p><h3 class="h3">Rover de exploración 6×6</h3></div>
-          <p class="mono-p">Rover con suspensión rocker-bogie para terreno irregular, pensado para University Rover Challenge y para correr la navegación de KinetiQ y Axon-R.</p>
+          <div><p class="crumbs" data-i18n="d3.crumbs">Vehículos <span>&gt;</span> <b>Estudio de diseño</b></p><h3 class="h3" data-i18n="d3.h">Rover de exploración 6×6</h3></div>
+          <p class="mono-p" data-i18n="d3.p">Rover con suspensión rocker-bogie para terreno irregular, pensado para University Rover Challenge y para correr la navegación de KinetiQ y Axon-R.</p>
         </div>
         <div class="bp"><div class="bp-frame">
-          <div class="bp-fig"><canvas class="draw" data-model="rover" role="img" aria-label="Dibujo isométrico de un rover de seis ruedas"></canvas><p class="fig-label">Fig. D-03 · Vista isométrica</p><p class="fig-read">Explosión <b>0 %</b><span class="xbar"><i></i></span></p></div>
-          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em>Suspensión rocker-bogie</em></li><li><span>02</span><em>Chasis con bahía electrónica</em></li><li><span>03</span><em>Mástil de cámara y brazo frontal</em></li></ol><div class="bp-fill" data-bom="rover"></div><button class="bp-open" type="button" data-cad="rover"><svg><use href="#i-cube"/></svg>Abrir visor CAD</button></div>
+          <div class="bp-fig"><canvas class="draw" data-model="rover" role="img" aria-label="Rover de seis ruedas en vista isométrica" data-i18n-attr="aria-label:d3.h"></canvas><p class="fig-label" data-i18n="d3.fig">Fig. D-03 · Vista isométrica</p><p class="fig-read"><span data-i18n="ui.explode">Explosión</span> <b>0 %</b><span class="xbar"><i></i></span></p></div>
+          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em data-i18n="d3.r1">Suspensión rocker-bogie</em></li><li><span>02</span><em data-i18n="d3.r2">Chasis con bahía electrónica</em></li><li><span>03</span><em data-i18n="d3.r3">Mástil de cámara y brazo frontal</em></li></ol><div class="bp-fill" data-bom="rover"></div><button class="bp-open" type="button" data-cad="rover"><svg><use href="#i-cube"/></svg><span data-i18n="ui.opencad">Abrir visor CAD</span></button></div>
         </div></div>
       </article>
       <article class="sheet plate cadcard" style="--i:3" id="cad-rocket">
         <div class="cad-head">
-          <div><p class="crumbs">Aeroespacial <span>&gt;</span> <b>Estudio de diseño</b></p><h3 class="h3">Cohete sonda experimental</h3></div>
-          <p class="mono-p">Cohete sonda de dos secciones con su torre de lanzamiento: ojiva, bahía de aviónica, acople entre etapas, aletas y tobera.</p>
+          <div><p class="crumbs" data-i18n="d4.crumbs">Aeroespacial <span>&gt;</span> <b>Estudio de diseño</b></p><h3 class="h3" data-i18n="d4.h">Cohete sonda experimental</h3></div>
+          <p class="mono-p" data-i18n="d4.p">Cohete sonda de dos secciones con su torre de lanzamiento: ojiva, bahía de aviónica, acople entre etapas, aletas y tobera.</p>
         </div>
         <div class="bp"><div class="bp-frame">
-          <div class="bp-fig"><canvas class="draw" data-model="rocket" role="img" aria-label="Dibujo isométrico de un cohete sonda junto a su torre de lanzamiento"></canvas><p class="fig-label">Fig. D-04 · Vista isométrica</p><p class="fig-read">Explosión <b>0 %</b><span class="xbar"><i></i></span></p></div>
-          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em>Ojiva y bahía de aviónica</em></li><li><span>02</span><em>Etapas, acople y aletas</em></li><li><span>03</span><em>Tobera y torre de lanzamiento</em></li></ol><div class="bp-fill" data-bom="rocket"></div><button class="bp-open" type="button" data-cad="rocket"><svg><use href="#i-cube"/></svg>Abrir visor CAD</button></div>
+          <div class="bp-fig"><canvas class="draw" data-model="rocket" role="img" aria-label="Cohete sonda con torre de lanzamiento en vista isométrica" data-i18n-attr="aria-label:d4.h"></canvas><p class="fig-label" data-i18n="d4.fig">Fig. D-04 · Vista isométrica</p><p class="fig-read"><span data-i18n="ui.explode">Explosión</span> <b>0 %</b><span class="xbar"><i></i></span></p></div>
+          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em data-i18n="d4.r1">Ojiva y bahía de aviónica</em></li><li><span>02</span><em data-i18n="d4.r2">Etapas, acople y aletas</em></li><li><span>03</span><em data-i18n="d4.r3">Tobera y torre de lanzamiento</em></li></ol><div class="bp-fill" data-bom="rocket"></div><button class="bp-open" type="button" data-cad="rocket"><svg><use href="#i-cube"/></svg><span data-i18n="ui.opencad">Abrir visor CAD</span></button></div>
         </div></div>
       </article>
       <article class="sheet plate cadcard" style="--i:4" id="cad-soccer">
         <div class="cad-head">
-          <div><p class="crumbs">Robótica de competencia <span>&gt;</span> <b>Baja Robotics League</b></p><h3 class="h3">Robot de fútbol BRL</h3></div>
-          <p class="mono-p">Chasis de dos niveles con tracción diferencial, pateador con solenoide y electrónica ESP32, controlado con la app BRL Control Pro.</p>
+          <div><p class="crumbs" data-i18n="d5.crumbs">Robótica de competencia <span>&gt;</span> <b>Baja Robotics League</b></p><h3 class="h3" data-i18n="d5.h">Robot de fútbol BRL</h3></div>
+          <p class="mono-p" data-i18n="d5.p">Chasis de dos niveles con tracción diferencial, pateador con solenoide y electrónica ESP32, controlado con la app BRL Control Pro.</p>
         </div>
         <div class="bp"><div class="bp-frame">
-          <div class="bp-fig"><canvas class="draw" data-model="soccer" role="img" aria-label="Dibujo isométrico de un robot de fútbol"></canvas><p class="fig-label">Fig. D-05 · Vista isométrica</p><p class="fig-read">Explosión <b>0 %</b><span class="xbar"><i></i></span></p></div>
-          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em>Tracción diferencial</em></li><li><span>02</span><em>Pateador con solenoide</em></li><li><span>03</span><em>Electrónica ESP32</em></li></ol><div class="bp-fill" data-bom="soccer"></div><button class="bp-open" type="button" data-cad="soccer"><svg><use href="#i-cube"/></svg>Abrir visor CAD</button></div>
+          <div class="bp-fig"><canvas class="draw" data-model="soccer" role="img" aria-label="Robot de fútbol en vista isométrica" data-i18n-attr="aria-label:d5.h"></canvas><p class="fig-label" data-i18n="d5.fig">Fig. D-05 · Vista isométrica</p><p class="fig-read"><span data-i18n="ui.explode">Explosión</span> <b>0 %</b><span class="xbar"><i></i></span></p></div>
+          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em data-i18n="d5.r1">Tracción diferencial</em></li><li><span>02</span><em data-i18n="d5.r2">Pateador con solenoide</em></li><li><span>03</span><em data-i18n="d5.r3">Electrónica ESP32</em></li></ol><div class="bp-fill" data-bom="soccer"></div><button class="bp-open" type="button" data-cad="soccer"><svg><use href="#i-cube"/></svg><span data-i18n="ui.opencad">Abrir visor CAD</span></button></div>
         </div></div>
       </article>
       <article class="sheet plate cadcard" style="--i:5" id="cad-herds">
         <div class="cad-head">
-          <div><p class="crumbs">Agua <span>&gt;</span> <b>Patente en trámite</b></p><h3 class="h3">Módulo de celdas HER-DS1</h3></div>
-          <p class="mono-p">Modelo conceptual del módulo de desalinización por hidrogel electro-responsivo del proyecto AGUA VIVA. La geometría es ilustrativa; el diseño detallado está en la solicitud de patente.</p>
+          <div><p class="crumbs" data-i18n="d6.crumbs">Agua <span>&gt;</span> <b>Patente en trámite</b></p><h3 class="h3" data-i18n="d6.h">Módulo de celdas HER-DS1</h3></div>
+          <p class="mono-p" data-i18n="d6.p">Modelo conceptual del módulo de desalinización por hidrogel electro-responsivo del proyecto AGUA VIVA. La geometría es ilustrativa; el diseño detallado está en la solicitud de patente.</p>
         </div>
         <div class="bp"><div class="bp-frame">
-          <div class="bp-fig"><canvas class="draw" data-model="herds" role="img" aria-label="Modelo conceptual isométrico de un módulo de celdas apiladas"></canvas><p class="fig-label">Fig. D-06 · Modelo conceptual</p><p class="fig-read">Explosión <b>0 %</b><span class="xbar"><i></i></span></p></div>
-          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em>Placas extremas y tirantes</em></li><li><span>02</span><em>Electrodos y juntas</em></li><li><span>03</span><em>Cámaras de hidrogel</em></li></ol><div class="bp-fill" data-bom="herds"></div><button class="bp-open" type="button" data-cad="herds"><svg><use href="#i-cube"/></svg>Abrir visor CAD</button></div>
+          <div class="bp-fig"><canvas class="draw" data-model="herds" role="img" aria-label="Modelo conceptual del módulo de celdas HER-DS1" data-i18n-attr="aria-label:d6.h"></canvas><p class="fig-label" data-i18n="d6.fig">Fig. D-06 · Modelo conceptual</p><p class="fig-read"><span data-i18n="ui.explode">Explosión</span> <b>0 %</b><span class="xbar"><i></i></span></p></div>
+          <div class="bp-side"><ol class="bp-rows"><li><span>01</span><em data-i18n="d6.r1">Placas extremas y tirantes</em></li><li><span>02</span><em data-i18n="d6.r2">Electrodos y juntas</em></li><li><span>03</span><em data-i18n="d6.r3">Cámaras de hidrogel</em></li></ol><div class="bp-fill" data-bom="herds"></div><button class="bp-open" type="button" data-cad="herds"><svg><use href="#i-cube"/></svg><span data-i18n="ui.opencad">Abrir visor CAD</span></button></div>
         </div></div>
       </article>
     </div>
@@ -464,62 +545,67 @@
 </section>
 
 <!-- 06 · EXPERIENCIA Y COMPETENCIAS -->
-<section class="section page" id="experiencia" data-page="06" data-title="Experiencia">
+<section class="section page" id="experiencia" data-page="06">
   <div class="wrap">
     <div class="sec-head" data-anim="head">
-      <p class="crumbs">Hoja 06 <span>&gt;</span> <b>Experiencia y competencias</b></p>
-      <h2 class="h2">De la planta al aula y a la startup</h2>
-      <p class="mono-p">Automatización industrial en campo, educación STEM en comunidad y dirección de una startup.</p>
+      <p class="crumbs" data-i18n="xp.crumbs">Hoja 06 <span>&gt;</span> <b>Experiencia y competencias</b></p>
+      <h2 class="h2" data-i18n="xp.h">De la planta al aula y a la startup</h2>
+      <p class="mono-p" data-i18n="xp.p">Automatización industrial en campo, educación STEM en comunidad y dirección de una startup.</p>
     </div>
     <ol class="xp">
       <li data-anim>
-        <div class="xp-when">2026 – hoy</div>
-        <div><h3>Fundador y CEO</h3><p class="org">Qubiko · EdTech</p></div>
-        <ul><li>Producto y estrategia de una plataforma con IA que genera proyectos de robótica.</li><li>Hardware propio: kit DowelBot y controlador Qubiko Core.</li><li>Alianzas con Bibliotecas Públicas de B.C., escuelas y Geeks Academy.</li></ul>
+        <div class="xp-when" data-i18n="x1.when">2026 – hoy</div>
+        <div><h3 data-i18n="x1.h">Fundador y CEO</h3><p class="org">Qubiko · EdTech</p></div>
+        <ul><li data-i18n="x1.a">Producto y estrategia de una plataforma con IA que genera proyectos de robótica.</li><li data-i18n="x1.b">Hardware propio: kit DowelBot y controlador Qubiko Core.</li><li data-i18n="x1.c">Alianzas con Bibliotecas Públicas de B.C., escuelas y Geeks Academy.</li></ul>
       </li>
       <li data-anim>
-        <div class="xp-when">2023 – hoy</div>
-        <div><h3>Profesor de STEM y Robótica</h3><p class="org">Programas comunitarios · CultivaTec</p></div>
-        <ul><li>Talleres de robótica, programación y electrónica basados en proyectos.</li><li>Más de 2,000 estudiantes, empezando gratis en comunidades vulnerables.</li></ul>
+        <div class="xp-when" data-i18n="x2.when">2023 – hoy</div>
+        <div><h3 data-i18n="x2.h">Profesor de STEM y Robótica</h3><p class="org" data-i18n="x2.org">Programas comunitarios · CultivaTec</p></div>
+        <ul><li data-i18n="x2.a">Talleres de robótica, programación y electrónica basados en proyectos.</li><li data-i18n="x2.b">Más de 2,000 estudiantes, empezando gratis en comunidades vulnerables.</li></ul>
       </li>
       <li data-anim>
         <div class="xp-when">2022 – 2025</div>
-        <div><h3>Automatización y servicio en campo</h3><p class="org">Badger Automation · Kotkoff · Molinera del Valle · Jeneza</p></div>
-        <ul><li>Puesta en marcha y diagnóstico para Kellogg’s, Bimbo e Intuitive Surgical.</li><li>PLC Allen-Bradley, variadores, integración robótica, ROS 2 y visión artificial.</li></ul>
+        <div><h3 data-i18n="x3.h">Automatización y servicio en campo</h3><p class="org">Badger Automation · Kotkoff · Molinera del Valle · Jeneza</p></div>
+        <ul><li data-i18n="x3.a">Puesta en marcha y diagnóstico para Kellogg’s, Bimbo e Intuitive Surgical.</li><li data-i18n="x3.b">PLC Allen-Bradley, variadores, integración robótica, ROS 2 y visión artificial.</li></ul>
       </li>
     </ol>
-    <h3 class="sub-title" data-anim>Competencias</h3>
+    <h3 class="sub-title" data-anim data-i18n="xp.skills">Competencias</h3>
     <div class="spec" data-anim>
-      <div class="spec-row"><div class="spec-k"><i>01</i>Robótica</div><ul class="tags"><li>FANUC</li><li>KUKA</li><li>ROS 2</li><li>micro-ROS</li><li>SolidWorks CSWA / CSWP</li><li>AutoCAD</li></ul></div>
-      <div class="spec-row"><div class="spec-k"><i>02</i>Automatización</div><ul class="tags"><li>PLC Allen-Bradley</li><li>Variadores</li><li>Control PID</li><li>IEC 61131-3</li></ul></div>
-      <div class="spec-row"><div class="spec-k"><i>03</i>IA y AI Physics</div><ul class="tags"><li>LLM</li><li>YOLO</li><li>OpenCV</li><li>PyTorch</li><li>Simulación física</li><li>Sim-to-real</li></ul></div>
-      <div class="spec-row"><div class="spec-k"><i>04</i>Cuántica</div><ul class="tags"><li>Qiskit</li><li>QAOA</li><li>VQE</li><li>Quantum ML</li></ul></div>
-      <div class="spec-row"><div class="spec-k"><i>05</i>Software</div><ul class="tags"><li>Python</li><li>C++</li><li>ESP32</li><li>FreeRTOS</li><li>Next.js</li><li>Firebase</li></ul></div>
-      <div class="spec-row"><div class="spec-k"><i>06</i>Liderazgo</div><ul class="tags"><li>Equipos multidisciplinarios</li><li>Producto</li><li>Alianzas</li><li>Pitch</li></ul></div>
+      <div class="spec-row"><div class="spec-k"><i>01</i><span data-i18n="s1">Robótica</span></div><ul class="tags"><li>FANUC</li><li>KUKA</li><li>ROS 2</li><li>micro-ROS</li><li>SolidWorks CSWA / CSWP</li><li>AutoCAD</li></ul></div>
+      <div class="spec-row"><div class="spec-k"><i>02</i><span data-i18n="s2">Automatización</span></div><ul class="tags"><li>PLC Allen-Bradley</li><li data-i18n="tag.vfd">Variadores</li><li data-i18n="tag.pid">Control PID</li><li>IEC 61131-3</li></ul></div>
+      <div class="spec-row"><div class="spec-k"><i>03</i><span data-i18n="s3">IA y AI Physics</span></div><ul class="tags"><li>LLM</li><li>YOLO</li><li>OpenCV</li><li>PyTorch</li><li data-i18n="tag.sim">Simulación física</li><li>Sim-to-real</li></ul></div>
+      <div class="spec-row"><div class="spec-k"><i>04</i><span data-i18n="s4">Cuántica</span></div><ul class="tags"><li>Qiskit</li><li>QAOA</li><li>VQE</li><li>Quantum ML</li></ul></div>
+      <div class="spec-row"><div class="spec-k"><i>05</i><span>Software</span></div><ul class="tags"><li>Python</li><li>C++</li><li>ESP32</li><li>FreeRTOS</li><li>Next.js</li><li>Firebase</li></ul></div>
+      <div class="spec-row"><div class="spec-k"><i>06</i><span data-i18n="s6">Liderazgo</span></div><ul class="tags"><li data-i18n="tag.teams">Equipos multidisciplinarios</li><li data-i18n="tag.product">Producto</li><li data-i18n="tag.partners">Alianzas</li><li>Pitch</li></ul></div>
     </div>
   </div>
 </section>
 
 <!-- 07 · LOGROS -->
-<section class="section page" id="logros" data-page="07" data-title="Logros">
+<section class="section page" id="logros" data-page="07">
   <div class="wrap">
     <div class="sec-head" data-anim="head">
-      <p class="crumbs">Hoja 07 <span>&gt;</span> <b>Patente y reconocimientos</b></p>
-      <h2 class="h2">Patente y reconocimientos</h2>
-      <p class="mono-p">Una solicitud de patente y algunas de las competencias de emprendimiento más relevantes del país.</p>
+      <p class="crumbs" data-i18n="lg.crumbs">Hoja 07 <span>&gt;</span> <b>Patente y reconocimientos</b></p>
+      <h2 class="h2" data-i18n="lg.h">Patente y reconocimientos</h2>
+      <p class="mono-p" data-i18n="lg.p">Una solicitud de patente y algunas de las competencias de emprendimiento más relevantes del país.</p>
     </div>
     <article class="plate patent" id="patente" data-anim>
       <div class="plate-top">
-        <p class="crumbs">Inventor principal <span>&gt;</span> <b>Proyecto AGUA VIVA</b></p>
-        <h3 class="h3">Desalinización mediante hidrogel electro-responsivo de adsorción selectiva (HER-DS1)</h3>
+        <p class="crumbs" data-i18n="pt.crumbs">Inventor principal <span>&gt;</span> <b>Proyecto AGUA VIVA</b></p>
+        <h3 class="h3" data-i18n="pt.h">Desalinización mediante hidrogel electro-responsivo de adsorción selectiva (HER-DS1)</h3>
         <ul class="dots">
-          <li><b>Cero descarga líquida</b><span>Desaliniza sin generar salmuera tóxica.</span></li>
-          <li><b>Aval científico</b><span>Dictamen técnico de factibilidad de la UNAM.</span></li>
-          <li><b>Postulaciones</b><span>Premio IMPI 2025 y Cleantech Challenge México 2025.</span></li>
+          <li><b data-i18n="pt.1b">Cero descarga líquida</b><span data-i18n="pt.1s">Desaliniza sin generar salmuera tóxica.</span></li>
+          <li><b data-i18n="pt.2b">Aval científico</b><span data-i18n="pt.2s">Dictamen técnico de factibilidad de la UNAM.</span></li>
+          <li><b data-i18n="pt.3b">Postulaciones</b><span data-i18n="pt.3s">Premio IMPI 2025 y Cleantech Challenge México 2025.</span></li>
         </ul>
       </div>
       <div class="bp">
-        <div class="bp-tb tb3"><span>Solicitud MX/A/2025/012269 · en trámite</span><span>7 ago 2025</span><a href="#cad-herds">Ver modelo CAD →</a></div>
+        <figure class="shot on-blue">
+          <div class="shot-bar"><i></i><i></i><i></i><span>herds-1.vercel.app</span></div>
+          <img src="assets/img/herds.webp" width="1200" height="467" loading="lazy" decoding="async" alt="Sitio de HERDS-1: rovers autónomos que siembran un hidrogel patentado" data-i18n-attr="alt:pt.alt">
+          <figcaption data-i18n="pt.cap">HERDS-1: rovers agrotech que siembran el hidrogel patentado</figcaption>
+        </figure>
+        <div class="bp-tb tb3"><span data-i18n="pt.tb1">Solicitud MX/A/2025/012269 · en trámite</span><span data-i18n="pt.tb2">7 ago 2025</span><a href="#cad-herds" data-i18n="pt.tb3">Ver modelo CAD →</a></div>
       </div>
     </article>
     <div class="awards">
@@ -527,89 +613,92 @@
         <div class="bp">
           <div class="ds">
             <div class="ds-h"><span>Bécalos × POSiBLE</span><span>2026</span></div>
-            <div class="award-big"><span class="n">1.<sup>er</sup></span><p>Lugar nacional</p></div>
-            <div class="bp-tb"><span>Reto POSiBLE Bécalos · beca</span><span>$50,000 MXN</span></div>
+            <div class="award-big">
+              <svg class="medal" viewBox="0 0 120 150" aria-hidden="true"><path d="M38 4l22 44M82 4 60 48M30 4h16M74 4h16"/><circle cx="60" cy="96" r="44"/><circle cx="60" cy="96" r="34" stroke-dasharray="3 5"/><path d="m60 72 7 15 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2z"/></svg>
+              <span class="n" data-i18n="aw.n">1.<sup>er</sup></span><p data-i18n="aw.p">Lugar nacional</p>
+            </div>
+            <div class="bp-tb"><span data-i18n="aw.tb">Reto POSiBLE Bécalos · beca</span><span>$50,000 MXN</span></div>
           </div>
         </div>
       </article>
       <ul class="award-list" data-anim>
-        <li><svg><use href="#i-star"/></svg><b>Campamento Nacional POSiBLE</b><span>Uno de 7 proyectos de B.C. entre más de 31,000 registros</span></li>
-        <li><svg><use href="#i-star"/></svg><b>3.<sup>er</sup> lugar estatal</b><span>CREO MX 2026</span></li>
-        <li><svg><use href="#i-star"/></svg><b>NVIDIA Inception</b><span>Programa para startups de IA</span></li>
-        <li><svg><use href="#i-star"/></svg><b>Líder Emprendedor</b><span>Revista Líderes del Éxito</span></li>
-        <li><svg><use href="#i-star"/></svg><b>Miembro fundador</b><span>Talent Venture Network</span></li>
+        <li><svg><use href="#i-star"/></svg><b data-i18n="aw.1b">Campamento Nacional POSiBLE</b><span data-i18n="aw.1s">Uno de 7 proyectos de B.C. entre más de 31,000 registros</span></li>
+        <li><svg><use href="#i-star"/></svg><b data-i18n="aw.2b">3.<sup>er</sup> lugar estatal</b><span>CREO MX 2026</span></li>
+        <li><svg><use href="#i-star"/></svg><b>NVIDIA Inception</b><span data-i18n="aw.3s">Programa para startups de IA</span></li>
+        <li><svg><use href="#i-star"/></svg><b data-i18n="aw.4b">Líder Emprendedor</b><span data-i18n="aw.4s">Revista Líderes del Éxito</span></li>
+        <li><svg><use href="#i-star"/></svg><b data-i18n="aw.5b">Miembro fundador</b><span>Talent Venture Network</span></li>
       </ul>
     </div>
   </div>
 </section>
 
 <!-- 08 · PRENSA -->
-<section class="section page" id="prensa" data-page="08" data-title="Prensa">
+<section class="section page" id="prensa" data-page="08">
   <div class="wrap">
     <div class="sec-head" data-anim="head">
-      <p class="crumbs">Hoja 08 <span>&gt;</span> <b>Prensa</b></p>
-      <h2 class="h2">En los medios</h2>
-      <p class="mono-p">Notas y entrevistas sobre Qubiko, CultivaTec y la robótica gratuita para niños.</p>
+      <p class="crumbs" data-i18n="pr.crumbs">Hoja 08 <span>&gt;</span> <b>Prensa</b></p>
+      <h2 class="h2" data-i18n="pr.h">En los medios</h2>
+      <p class="mono-p" data-i18n="pr.p">Notas y entrevistas sobre Qubiko, CultivaTec y la robótica gratuita para niños.</p>
     </div>
     <div class="press">
       <a class="clip" data-anim href="https://www.elimparcial.com/mxl/mexicali/2026/10/19/jovenes-de-mexicali-ganan-primer-lugar-a-nivel-nacional-con-plataforma-de-ia-para-ninos/" target="_blank" rel="noopener">
-        <div class="clip-bar"><span>El Imparcial</span><span>20 oct 2026</span></div>
-        <div class="clip-body"><h3>Estudiantes de Mexicali ganan primer lugar a nivel nacional con plataforma de IA para niños</h3><span class="more">Leer nota <svg><use href="#i-arrow"/></svg></span></div>
+        <div class="clip-bar"><span>El Imparcial</span><span data-i18n="pr.d1">20 oct 2026</span></div>
+        <div class="clip-body"><p class="clip-lang" data-i18n="pr.lang"></p><h3>Estudiantes de Mexicali ganan primer lugar a nivel nacional con plataforma de IA para niños</h3><span class="more"><span data-i18n="pr.read">Leer nota</span> <svg><use href="#i-arrow"/></svg></span></div>
       </a>
       <a class="clip" data-anim href="https://www.uniradiobaja.com/sociedad/destaca-talento-emprendedor-baja-california-campamento-nacional-posible-2026-n907450" target="_blank" rel="noopener">
-        <div class="clip-bar"><span>Uniradio Informa</span><span>11 oct 2026</span></div>
-        <div class="clip-body"><h3>Destaca talento emprendedor de Baja California en Campamento Nacional Posible 2026</h3><span class="more">Leer nota <svg><use href="#i-arrow"/></svg></span></div>
+        <div class="clip-bar"><span>Uniradio Informa</span><span data-i18n="pr.d2">11 oct 2026</span></div>
+        <div class="clip-body"><p class="clip-lang" data-i18n="pr.lang"></p><h3>Destaca talento emprendedor de Baja California en Campamento Nacional Posible 2026</h3><span class="more"><span data-i18n="pr.read">Leer nota</span> <svg><use href="#i-arrow"/></svg></span></div>
       </a>
       <a class="clip" data-anim href="https://www.elimparcial.com/mxl/mexicali/2026/06/11/jovenes-universitarios-crean-proyecto-para-llevar-robotica-gratuita-a-ninos-de-escuelas-vulnerables/" target="_blank" rel="noopener">
-        <div class="clip-bar"><span>El Imparcial</span><span>10 jun 2026</span></div>
-        <div class="clip-body"><h3>Jóvenes universitarios crean proyecto para llevar robótica gratuita a niños de escuelas vulnerables</h3><span class="more">Leer nota <svg><use href="#i-arrow"/></svg></span></div>
+        <div class="clip-bar"><span>El Imparcial</span><span data-i18n="pr.d3">10 jun 2026</span></div>
+        <div class="clip-body"><p class="clip-lang" data-i18n="pr.lang"></p><h3>Jóvenes universitarios crean proyecto para llevar robótica gratuita a niños de escuelas vulnerables</h3><span class="more"><span data-i18n="pr.read">Leer nota</span> <svg><use href="#i-arrow"/></svg></span></div>
       </a>
       <a class="clip" data-anim href="https://lnkd.in/p/e9VgKe9U" target="_blank" rel="noopener">
-        <div class="clip-bar"><span>Canal 66 · TV</span><span>Oct 2026</span></div>
-        <div class="clip-body"><h3>Qubiko en Canal 66: robótica, programación e IA para más niños y jóvenes</h3><span class="more">Ver en LinkedIn <svg><use href="#i-arrow"/></svg></span></div>
+        <div class="clip-bar"><span>Canal 66 · TV</span><span data-i18n="pr.d4">Oct 2026</span></div>
+        <div class="clip-body"><p class="clip-lang" data-i18n="pr.lang"></p><h3 data-i18n="pr.h4">Qubiko en Canal 66: robótica, programación e IA para más niños y jóvenes</h3><span class="more"><span data-i18n="pr.li">Ver en LinkedIn</span> <svg><use href="#i-arrow"/></svg></span></div>
       </a>
     </div>
   </div>
 </section>
 
 <!-- 09 · CERTIFICACIONES -->
-<section class="section page" id="formacion" data-page="09" data-title="Certificaciones">
+<section class="section page" id="formacion" data-page="09">
   <div class="wrap">
     <div class="sec-head" data-anim="head">
-      <p class="crumbs">Hoja 09 <span>&gt;</span> <b>Formación y certificaciones</b></p>
-      <h2 class="h2">Certificaciones</h2>
-      <p class="mono-p">Ing. Mecatrónica (UPBC) e Ing. en Energías Renovables (UABC). Español nativo, inglés técnico intermedio.</p>
+      <p class="crumbs" data-i18n="ce.crumbs">Hoja 09 <span>&gt;</span> <b>Formación y certificaciones</b></p>
+      <h2 class="h2" data-i18n="page.formacion">Certificaciones</h2>
+      <p class="mono-p" data-i18n="ce.p">Ing. Mecatrónica (UPBC) e Ing. en Energías Renovables (UABC). Español nativo, inglés técnico intermedio.</p>
     </div>
     <div class="certs rail">
-      <article class="cert" data-anim><p class="iss"><span>MIT Professional Education</span><span>2026</span></p><h3>AI in Robotics: Learning Algorithms, Design and Safety</h3><p class="meta">25 mar 2026</p></article>
-      <article class="cert" data-anim><p class="iss"><span>FANUC Academy</span><span>2026</span></p><h3>Operación y programación de robots industriales</h3><p class="meta">80 h · intermedio · ID FA-2026-0625-87341</p></article>
-      <article class="cert q" data-anim><p class="iss"><span>IBM Quantum</span><span>Avanzado</span></p><h3>Variational Algorithm Design</h3><a href="https://www.credly.com/badges/4e708a62-2dde-4115-8f51-b3a1320e712c/public_url" target="_blank" rel="noopener">Verificar en Credly ↗</a></article>
-      <article class="cert q" data-anim><p class="iss"><span>IBM Quantum</span><span>Insignia</span></p><h3>Fundamentals of Quantum Algorithms</h3><a href="https://www.credly.com/badges/98ec0890-c33a-4584-879e-e93b79f6bd34/public_url" target="_blank" rel="noopener">Verificar en Credly ↗</a></article>
-      <article class="cert q" data-anim><p class="iss"><span>IBM Quantum</span><span>Insignia</span></p><h3>Quantum Machine Learning</h3><a href="https://www.credly.com/badges/1ac7dba4-97ec-4f5a-93ce-9fde28004f7c/public_url" target="_blank" rel="noopener">Verificar en Credly ↗</a></article>
-      <article class="cert q" data-anim><p class="iss"><span>IBM Quantum</span><span>Insignia</span></p><h3>Basics of Quantum Information</h3><a href="https://www.credly.com/badges/683fdfab-5d4b-4108-8d3d-688c13ff1d24/public_url" target="_blank" rel="noopener">Verificar en Credly ↗</a></article>
-      <article class="cert" data-anim><p class="iss"><span>HackerRank</span><span>2025</span></p><h3>Software Engineer</h3><p class="meta">22 nov 2025 · ID D048DFF16CD7</p></article>
-      <article class="cert" data-anim><p class="iss"><span>SolidWorks</span><span>Dassault</span></p><h3>CSWA / CSWP</h3><p class="meta">Diseño mecánico asociado y profesional</p></article>
-      <article class="cert" data-anim><p class="iss"><span>Allen-Bradley</span><span>Rockwell</span></p><h3>Programación de PLC</h3><p class="meta">Controladores lógicos programables</p></article>
+      <article class="cert" data-anim><span class="seal">MIT</span><p class="iss"><span>MIT Professional Education</span><span>2026</span></p><h3>AI in Robotics: Learning Algorithms, Design and Safety</h3><p class="meta" data-i18n="ce.mit">25 mar 2026</p></article>
+      <article class="cert" data-anim><span class="seal">FA</span><p class="iss"><span>FANUC Academy</span><span>2026</span></p><h3 data-i18n="ce.fanuc">Operación y programación de robots industriales</h3><p class="meta" data-i18n="ce.fanucm">80 h · intermedio · ID FA-2026-0625-87341</p></article>
+      <article class="cert q" data-anim><span class="seal">IBM</span><p class="iss"><span>IBM Quantum</span><span data-i18n="ce.adv">Avanzado</span></p><h3>Variational Algorithm Design</h3><a href="https://www.credly.com/badges/4e708a62-2dde-4115-8f51-b3a1320e712c/public_url" target="_blank" rel="noopener" data-i18n="ce.verify">Verificar en Credly ↗</a></article>
+      <article class="cert q" data-anim><span class="seal">IBM</span><p class="iss"><span>IBM Quantum</span><span data-i18n="ce.badge">Insignia</span></p><h3>Fundamentals of Quantum Algorithms</h3><a href="https://www.credly.com/badges/98ec0890-c33a-4584-879e-e93b79f6bd34/public_url" target="_blank" rel="noopener" data-i18n="ce.verify">Verificar en Credly ↗</a></article>
+      <article class="cert q" data-anim><span class="seal">IBM</span><p class="iss"><span>IBM Quantum</span><span data-i18n="ce.badge">Insignia</span></p><h3>Quantum Machine Learning</h3><a href="https://www.credly.com/badges/1ac7dba4-97ec-4f5a-93ce-9fde28004f7c/public_url" target="_blank" rel="noopener" data-i18n="ce.verify">Verificar en Credly ↗</a></article>
+      <article class="cert q" data-anim><span class="seal">IBM</span><p class="iss"><span>IBM Quantum</span><span data-i18n="ce.badge">Insignia</span></p><h3>Basics of Quantum Information</h3><a href="https://www.credly.com/badges/683fdfab-5d4b-4108-8d3d-688c13ff1d24/public_url" target="_blank" rel="noopener" data-i18n="ce.verify">Verificar en Credly ↗</a></article>
+      <article class="cert" data-anim><span class="seal">HR</span><p class="iss"><span>HackerRank</span><span>2025</span></p><h3>Software Engineer</h3><p class="meta" data-i18n="ce.hr">22 nov 2025 · ID D048DFF16CD7</p></article>
+      <article class="cert" data-anim><span class="seal">SW</span><p class="iss"><span>SolidWorks</span><span>Dassault</span></p><h3>CSWA / CSWP</h3><p class="meta" data-i18n="ce.sw">Diseño mecánico asociado y profesional</p></article>
+      <article class="cert" data-anim><span class="seal">AB</span><p class="iss"><span>Allen-Bradley</span><span>Rockwell</span></p><h3 data-i18n="ce.plc">Programación de PLC</h3><p class="meta" data-i18n="ce.plcm">Controladores lógicos programables</p></article>
     </div>
   </div>
 </section>
 
 <!-- 10 · CONTACTO -->
-<section class="section page contact" id="contacto" data-page="10" data-title="Contacto">
+<section class="section page contact" id="contacto" data-page="10">
   <div class="wrap">
     <div class="plate" data-anim>
       <div class="bp">
         <div class="contact-head">
-          <p class="crumbs">Hoja 10 <span>&gt;</span> <b>Contacto</b></p>
-          <h2 class="h1">Construyamos lo que sigue</h2>
-          <p>Proyectos de robótica, alianzas, charlas y mentoría para emprendedores de Baja California.</p>
-          <ul class="tags on-blue"><li>Validación de ideas y MVP</li><li>IA aplicada</li><li>Robótica y hardware</li><li>Pitch y convocatorias</li><li>EdTech</li></ul>
+          <p class="crumbs" data-i18n="co.crumbs">Hoja 10 <span>&gt;</span> <b>Contacto</b></p>
+          <h2 class="h1" data-i18n="co.h">Construyamos lo que sigue</h2>
+          <p data-i18n="co.p">Proyectos de robótica, alianzas, charlas y mentoría para emprendedores de Baja California.</p>
+          <ul class="tags on-blue"><li data-i18n="co.t1">Validación de ideas y MVP</li><li data-i18n="co.t2">IA aplicada</li><li data-i18n="co.t3">Robótica y hardware</li><li data-i18n="co.t4">Pitch y convocatorias</li><li>EdTech</li></ul>
         </div>
         <ul class="c-rows">
-          <li><span class="n">01</span><span class="k">Correo</span><span class="v" id="mail">diego.martinez111213@gmail.com</span><span class="c-act"><button type="button" id="copyMail"><svg><use href="#i-copy"/></svg><span>Copiar</span></button></span></li>
-          <li><span class="n">02</span><span class="k">Teléfono</span><span class="v">+52 686 163 2421</span><span class="c-act"></span></li>
-          <li><span class="n">03</span><span class="k">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/diego-eduardo-martinez-cruz-248a56a8" target="_blank" rel="noopener">diego-eduardo-martinez-cruz</a><span class="c-act"><a href="https://www.linkedin.com/in/diego-eduardo-martinez-cruz-248a56a8" target="_blank" rel="noopener">Abrir <svg><use href="#i-arrow"/></svg></a></span></li>
-          <li><span class="n">04</span><span class="k">GitHub</span><a class="v" href="https://github.com/deimosvn" target="_blank" rel="noopener">github.com/deimosvn</a><span class="c-act"><a href="https://github.com/deimosvn" target="_blank" rel="noopener">Abrir <svg><use href="#i-arrow"/></svg></a></span></li>
+          <li><span class="n">01</span><span class="k" data-i18n="co.mail">Correo</span><span class="v" id="mail">diego.martinez111213@gmail.com</span><span class="c-act"><button type="button" id="copyMail"><svg><use href="#i-copy"/></svg><span>Copiar</span></button></span></li>
+          <li><span class="n">02</span><span class="k" data-i18n="co.phone">Teléfono</span><span class="v">+52 686 163 2421</span><span class="c-act"></span></li>
+          <li><span class="n">03</span><span class="k">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/diego-eduardo-martinez-cruz-248a56a8" target="_blank" rel="noopener">diego-eduardo-martinez-cruz</a><span class="c-act"><a href="https://www.linkedin.com/in/diego-eduardo-martinez-cruz-248a56a8" target="_blank" rel="noopener"><span data-i18n="ui.open">Abrir</span> <svg><use href="#i-arrow"/></svg></a></span></li>
+          <li><span class="n">04</span><span class="k">GitHub</span><a class="v" href="https://github.com/deimosvn" target="_blank" rel="noopener">github.com/deimosvn</a><span class="c-act"><a href="https://github.com/deimosvn" target="_blank" rel="noopener"><span data-i18n="ui.open">Abrir</span> <svg><use href="#i-arrow"/></svg></a></span></li>
         </ul>
         <div class="bp-tb"><span>Diego Eduardo Martínez Cruz · Mexicali, B.C.</span><span>2026</span></div>
       </div>
@@ -622,7 +711,7 @@
 <footer class="footer">
   <div class="wrap">
     <span>© 2026 Diego Eduardo Martínez Cruz</span>
-    <span>Dibujos y visor CAD en tiempo real con <a href="https://threejs.org" target="_blank" rel="noopener">Three.js</a></span>
+    <span><span data-i18n="ui.footer">Dibujos y visor CAD en tiempo real con</span> <a href="https://threejs.org" target="_blank" rel="noopener">Three.js</a></span>
   </div>
 </footer>
 
@@ -634,32 +723,32 @@
         <p class="crumbs" id="cadCrumbs">Visor CAD</p>
         <h2 id="cadTitle">Diseño</h2>
       </div>
-      <button class="icon-btn" type="button" id="cadClose" aria-label="Cerrar visor CAD"><svg><use href="#i-close"/></svg></button>
+      <button class="icon-btn" type="button" id="cadClose" aria-label="Cerrar visor CAD" data-i18n-attr="aria-label:ui.close"><svg><use href="#i-close"/></svg></button>
     </header>
     <div class="cad-main">
       <div class="cad-view" id="cadView">
-        <canvas id="cadCanvas" aria-label="Vista 3D del ensamble. Arrastra para girar, usa la rueda o pellizca para acercar y toca una pieza para seleccionarla."></canvas>
+        <canvas id="cadCanvas" aria-label="Vista 3D del ensamble. Arrastra para girar, usa la rueda o pellizca para acercar y toca una pieza para seleccionarla." data-i18n-attr="aria-label:cad.canvas"></canvas>
         <div class="cad-dims" id="cadDims" aria-hidden="true"></div>
-        <div class="cad-views" role="group" aria-label="Vistas">
+        <div class="cad-views" role="group" aria-label="Vistas" data-i18n-attr="aria-label:cad.views">
           <button type="button" data-view="iso" aria-pressed="true">Iso</button>
-          <button type="button" data-view="front" aria-pressed="false">Frente</button>
-          <button type="button" data-view="side" aria-pressed="false">Lateral</button>
-          <button type="button" data-view="top" aria-pressed="false">Superior</button>
+          <button type="button" data-view="front" aria-pressed="false" data-i18n="cad.front">Frente</button>
+          <button type="button" data-view="side" aria-pressed="false" data-i18n="cad.side">Lateral</button>
+          <button type="button" data-view="top" aria-pressed="false" data-i18n="cad.top">Superior</button>
         </div>
-        <p class="cad-hint">Arrastra para girar · rueda o pellizco para acercar · toca una pieza</p>
+        <p class="cad-hint" data-i18n="cad.hint">Arrastra para girar · rueda o pellizco para acercar · toca una pieza</p>
         <div class="cad-tool">
           <button type="button" id="cadExplode" aria-pressed="false">Explosionar</button>
-          <label for="cadRange"><span class="lbl">Explosión</span> <input id="cadRange" type="range" min="0" max="100" value="0"><output id="cadOut" for="cadRange">0 %</output></label>
-          <button type="button" id="cadSpin" aria-pressed="true">Auto-giro</button>
-          <button type="button" id="cadDimsBtn" aria-pressed="true">Cotas</button>
-          <button type="button" id="cadFit">Encuadrar</button>
+          <label for="cadRange"><span class="lbl" data-i18n="ui.explode">Explosión</span> <input id="cadRange" type="range" min="0" max="100" value="0"><output id="cadOut" for="cadRange">0 %</output></label>
+          <button type="button" id="cadSpin" aria-pressed="true" data-i18n="cad.spin">Auto-giro</button>
+          <button type="button" id="cadDimsBtn" aria-pressed="true" data-i18n="cad.dims">Cotas</button>
+          <button type="button" id="cadFit" data-i18n="cad.fit">Encuadrar</button>
         </div>
       </div>
       <aside class="cad-side">
         <div class="cad-sel" id="cadSel"></div>
         <div class="bom-wrap">
           <table class="bom">
-            <thead><tr><th>N.º</th><th>Pieza</th><th>Material</th><th>Cant.</th></tr></thead>
+            <thead><tr><th data-i18n="cad.no">N.º</th><th data-i18n="cad.part">Pieza</th><th data-i18n="cad.mat">Material</th><th data-i18n="cad.qty">Cant.</th></tr></thead>
             <tbody id="cadBom"></tbody>
           </table>
         </div>
@@ -674,7 +763,8 @@
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="assets/js/main.js?v=9"></script>
-<script src="assets/js/blueprint.js?v=9"></script>
-<script src="assets/js/physics.js?v=9"></script>
+<script src="assets/js/i18n.js?v=12"></script>
+<script src="assets/js/main.js?v=12"></script>
+<script src="assets/js/blueprint.js?v=12"></script>
+<script src="assets/js/physics.js?v=12"></script>
 </html>
